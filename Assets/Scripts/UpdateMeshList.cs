@@ -25,7 +25,6 @@ public class updatemeshlist : MonoBehaviour
        }
        
        string[] meshFiles = System.IO.Directory.GetFiles(meshPath, "*.drc");
-       Debug.Log(meshPath);
        listView.SetItemCount(meshFiles.Length);
        
        listView.OnVisible = (go, i) =>

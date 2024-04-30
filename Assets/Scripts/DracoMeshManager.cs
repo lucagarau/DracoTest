@@ -15,6 +15,7 @@ public class DracoMeshManager : MonoBehaviour
     
     private MeshFilter meshFilter;
     private Renderer renderer;
+    private bool isVisible = false;
 
     private void Start()
     {
@@ -33,14 +34,19 @@ public class DracoMeshManager : MonoBehaviour
     {
         if (isStatic)
         {
-            if (meshPath != null && meshFilter.mesh == placeholderMesh)
+            if (meshPath != null && !isVisible)
             {
                 if (IsVisibleFromCamera(mainCamera, renderer))
+                {
+                    Debug.Log($"Cambio la mesh con {meshPath}");
                     ChangeMesh(meshPath);
+                    isVisible = true;
+                }
             }
-            else if (meshFilter.mesh != placeholderMesh && !IsVisibleFromCamera(mainCamera, renderer))
+            else if (isVisible && !IsVisibleFromCamera(mainCamera, renderer))
             {
                 meshFilter.mesh = placeholderMesh;
+                isVisible = false;
             }
         }
     }
@@ -166,7 +172,7 @@ public class DracoMeshManager : MonoBehaviour
             // Verifica se il bounding box interseca i piani di frustum della telecamera
             if (GeometryUtility.TestPlanesAABB(planes, bounds))
             {
-                return true; // L'oggetto è visibile nella telecamera
+                return true; // L'oggetto è visibile nella 
             }
         }
         return false; // L'oggetto non è visibile nella telecamera o non è valido

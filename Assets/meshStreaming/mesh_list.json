@@ -1,0 +1,157 @@
+[
+    {
+        "name": "34785.drc",
+        "size": 8580,
+        "LOD": 0
+    },
+    {
+        "name": "36069.drc",
+        "size": 319,
+        "LOD": 0
+    },
+    {
+        "name": "36086.drc",
+        "size": 1081,
+        "LOD": 0
+    },
+    {
+        "name": "36088.drc",
+        "size": 672,
+        "LOD": 0
+    },
+    {
+        "name": "376253.drc",
+        "size": 2694891,
+        "LOD": 0
+    },
+    {
+        "name": "alligator.drc",
+        "size": 4757,
+        "LOD": 0
+    },
+    {
+        "name": "armadillo.drc",
+        "size": 92496,
+        "LOD": 0
+    },
+    {
+        "name": "beast.drc",
+        "size": 57523,
+        "LOD": 0
+    },
+    {
+        "name": "beetle-alt.drc",
+        "size": 21751,
+        "LOD": 0
+    },
+    {
+        "name": "beetle.drc",
+        "size": 5662,
+        "LOD": 0
+    },
+    {
+        "name": "bimba.drc",
+        "size": 184532,
+        "LOD": 0
+    },
+    {
+        "name": "cheburashka.drc",
+        "size": 13688,
+        "LOD": 0
+    },
+    {
+        "name": "cow.drc",
+        "size": 7189,
+        "LOD": 0
+    },
+    {
+        "name": "fandisk.drc",
+        "size": 8537,
+        "LOD": 0
+    },
+    {
+        "name": "happy.drc",
+        "size": 89876,
+        "LOD": 0
+    },
+    {
+        "name": "homer.drc",
+        "size": 11093,
+        "LOD": 0
+    },
+    {
+        "name": "horse.drc",
+        "size": 55567,
+        "LOD": 0
+    },
+    {
+        "name": "igea.drc",
+        "size": 136333,
+        "LOD": 0
+    },
+    {
+        "name": "lucy.drc",
+        "size": 84543,
+        "LOD": 0
+    },
+    {
+        "name": "m1.drc",
+        "size": 21122,
+        "LOD": 0
+    },
+    {
+        "name": "m2.drc",
+        "size": 31994,
+        "LOD": 0
+    },
+    {
+        "name": "max-planck.drc",
+        "size": 91284,
+        "LOD": 0
+    },
+    {
+        "name": "nefertiti.drc",
+        "size": 91565,
+        "LOD": 0
+    },
+    {
+        "name": "ogre.drc",
+        "size": 66394,
+        "LOD": 0
+    },
+    {
+        "name": "rocker-arm.drc",
+        "size": 22883,
+        "LOD": 0
+    },
+    {
+        "name": "spot.drc",
+        "size": 9939,
+        "LOD": 0
+    },
+    {
+        "name": "stanford-bunny.drc",
+        "size": 42828,
+        "LOD": 0
+    },
+    {
+        "name": "suzanne.drc",
+        "size": 2843,
+        "LOD": 0
+    },
+    {
+        "name": "teapot.drc",
+        "size": 5312,
+        "LOD": 0
+    },
+    {
+        "name": "woody.drc",
+        "size": 1737,
+        "LOD": 0
+    },
+    {
+        "name": "xyzrgb_dragon.drc",
+        "size": 184328,
+        "LOD": 0
+    }
+]

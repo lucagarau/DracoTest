@@ -5,7 +5,6 @@ using System.IO;
 using MixedReality.Toolkit.UX;
 using MixedReality.Toolkit.UX.Experimental;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Networking;
 using File = UnityEngine.Windows.File;
@@ -18,6 +17,7 @@ public class updatemeshlistserver : MonoBehaviour
     [SerializeField] string meshURL = "http://localhost:8080/";
     public DracoMeshManager draco;
     [SerializeField] private VirtualizedScrollRectList listView;
+    [SerializeField] private GameObject placeholder;
 
     
     [Serializable]
@@ -35,6 +35,12 @@ public class updatemeshlistserver : MonoBehaviour
         foreach (FileInfo file in di.GetFiles())
         {
             file.Delete();
+        }
+        
+        if (draco == null)
+        {
+            draco = DracoMeshManager.instance;
+            return;
         }
         
         
@@ -55,7 +61,6 @@ public class updatemeshlistserver : MonoBehaviour
         string[] meshFiles = tmp.ToArray();
        
         listView.SetItemCount(meshFiles.Length);
-        print(meshFiles.Length);
 
         listView.OnVisible = (go, i) =>
         {
@@ -139,7 +144,6 @@ public class updatemeshlistserver : MonoBehaviour
                 var meshList = new List<string>();
                 foreach (var data in fileDataArray)
                 {
-                    print("Aggiunta mesh: " + data.name);
                     meshList.Add(data.name);
                 }
                 return new List<string>(meshList);
@@ -151,4 +155,49 @@ public class updatemeshlistserver : MonoBehaviour
             return null;
         }
     }
+
+    public void ResetMeshButton()
+    {
+        if (draco == null) return;
+        draco.ResetObject();
+    }
+    
+    public void DeleteMeshButton()
+    {
+        if (draco == null) return;
+        var go = draco.gameObject;
+        Destroy(go);
+    }
+    
+    public void newMeshButton()
+    {
+        if(placeholder == null) return;
+        var go = Instantiate(placeholder, new Vector3(0, 0, 0), Quaternion.identity);
+        draco = go.GetComponent<DracoMeshManager>();
+        if (draco!= null)
+        {
+            DracoMeshManager.instance = draco;
+        }
+        else
+        {
+            Debug.LogError("DracoMeshManager non trovato nel nuovo oggetto");
+        }
+    }
+
+    private void OnGUI()
+    {
+        if (GUI.Button(new Rect(10, 100, 50, 50), "Reset Mesh"))
+        {
+            ResetMeshButton();
+        }
+        if (GUI.Button(new Rect(10, 150, 50, 50), "Delete Mesh"))
+        {
+            DeleteMeshButton();
+        }
+        if (GUI.Button(new Rect(10, 200, 50, 50), "New Mesh"))
+        {
+            newMeshButton();
+        }
+    }
 }
+

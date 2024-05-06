@@ -2,6 +2,10 @@ using System;
 using System.IO;
 using UnityEngine;
 using Draco;
+using MixedReality.Toolkit;
+using MixedReality.Toolkit.UX;
+using MixedReality.Toolkit.Input;
+using MixedReality.Toolkit.SpatialManipulation;
 using UnityEditor;
 
 public class DracoMeshManager : MonoBehaviour
@@ -12,6 +16,9 @@ public class DracoMeshManager : MonoBehaviour
     [SerializeField] private Mesh placeholderMesh = null;
     [SerializeField] private string meshPath = null;
     private Vector3 startPosition;
+    private Vector3 normalizedScale = Vector3.one;
+    
+    static public DracoMeshManager instance;
     
     private MeshFilter meshFilter;
     private Renderer renderer;
@@ -28,6 +35,8 @@ public class DracoMeshManager : MonoBehaviour
         {
             GetComponent<MeshFilter>().mesh = placeholderMesh;
         }
+        
+        resizeObject();
     }
 
     public void FixedUpdate()
@@ -105,24 +114,6 @@ public class DracoMeshManager : MonoBehaviour
         methodInfo.Invoke(this, new object[] {path});
     }
     
-    //TODO Funzioni di Debug per fare il test di decompressione
-    public void load1()
-    {
-        ChangeMesh("meshes/m1.drc");
-    }
-    public void load2()
-    {
-        ChangeMesh("meshes/m2.drc");
-    }
-
-    public void OnGUI()
-    {
-        if (GUI.Button(new Rect(10, 10, 50, 50),"Mesh 1"))
-            load1();
-        if (GUI.Button(new Rect(200, 10, 50, 50),"Mesh 2"))
-            load2();
-    }
-
     private void rotateObject()
     {
         var camera = Camera.main;
@@ -133,26 +124,33 @@ public class DracoMeshManager : MonoBehaviour
     
     private void resizeObject()
     {
-        if(mainCamera == null)
-            mainCamera = Camera.main;
+        // if(mainCamera == null)
+        //     mainCamera = Camera.main;
+        //
+        // //calcolo della dimensione della mesh
+        // var bounds = GetComponent<MeshRenderer>().bounds;
+        // var size = Mathf.Max(bounds.size.x, bounds.size.y, bounds.size.z);
+        // var distance = (size / (2.0f * Mathf.Tan(mainCamera.fieldOfView * 0.5f * Mathf.Deg2Rad))) + padding;
+        // transform.localScale = Vector3.one * distance;
         
-        //calcolo della dimensione della mesh
-        var bounds = GetComponent<MeshRenderer>().bounds;
-        var size = Mathf.Max(bounds.size.x, bounds.size.y, bounds.size.z);
-        var distance = (size / (2.0f * Mathf.Tan(mainCamera.fieldOfView * 0.5f * Mathf.Deg2Rad))) + padding;
-        transform.localScale = Vector3.one * distance;
-    }
-    
-    public void resizeObject(float distance)
-    {
-        transform.localScale = Vector3.one * distance;
+        // Ottieni il bounding box della mesh
+        Bounds bounds = GetComponent<MeshFilter>().mesh.bounds;
+
+        // Calcola la diagonale del bounding box
+        float diagonalLength = bounds.size.magnitude;
+
+        // Normalizza le dimensioni della mesh
+        transform.localScale = Vector3.one;
+        transform.localScale /= diagonalLength;
+        normalizedScale = transform.localScale;
+        
     }
     
     public void ResetObject()
     {
-        resizeObject();
         rotateObject();
         transform.position = startPosition;
+        transform.localScale = normalizedScale;
 
     }
     
@@ -177,6 +175,16 @@ public class DracoMeshManager : MonoBehaviour
         }
         return false; // L'oggetto non è visibile nella telecamera o non è valido
     }
+    
+    public void OnTouch()
+    {
+        Debug.Log("Touched");
+        DracoMeshManager.instance = this;
+    }
+
+    
+    
+   
     
     
 }

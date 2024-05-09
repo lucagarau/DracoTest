@@ -97,7 +97,6 @@ public class updatemeshlistserver : MonoBehaviour
     {
         if (!File.Exists(meshPath + file))
         {
-            Debug.Log("Download del file: " + file);
 
             var url = meshURL + file;
             UnityWebRequest request = UnityWebRequest.Get(url);
@@ -110,7 +109,6 @@ public class updatemeshlistserver : MonoBehaviour
                 yield return null;
             }
 
-            Debug.Log("Download completato, salvataggio del file: " + file);
             // Salva il file scaricato nella directory locale
             string filePath = meshPath + file;
             System.IO.File.WriteAllBytes(filePath, request.downloadHandler.data);
@@ -118,7 +116,12 @@ public class updatemeshlistserver : MonoBehaviour
 
         if (file == "mesh_list.json")
         {
-            Debug.Log("Aggiornamento della lista delle mesh");
+            if (!File.Exists(meshPath + "mesh_list.json"))
+            {
+                Debug.LogError("Errore durante il download del file mesh_list.json, la connessione con il server potrebbe non essere riuscita");
+                yield return null;
+            }
+
             UpdateList();
         }
         else

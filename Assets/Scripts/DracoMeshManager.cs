@@ -2,11 +2,7 @@ using System;
 using System.IO;
 using UnityEngine;
 using Draco;
-using MixedReality.Toolkit;
-using MixedReality.Toolkit.UX;
-using MixedReality.Toolkit.Input;
-using MixedReality.Toolkit.SpatialManipulation;
-using UnityEditor;
+
 
 public class DracoMeshManager : MonoBehaviour
 {
@@ -23,6 +19,9 @@ public class DracoMeshManager : MonoBehaviour
     private MeshFilter meshFilter;
     private Renderer renderer;
     private bool isVisible = false;
+    
+    private Bounds normalizedBounds;
+    private Bounds bounds;
 
     private void Start()
     {
@@ -30,13 +29,13 @@ public class DracoMeshManager : MonoBehaviour
         
         meshFilter = GetComponent<MeshFilter>();
         renderer = GetComponent<Renderer>();
-
+        normalizedBounds = renderer.bounds;
         if (isStatic && placeholderMesh != null)
         {
             GetComponent<MeshFilter>().mesh = placeholderMesh;
         }
         
-        resizeObject();
+        //resizeObject();
     }
 
     public void FixedUpdate()
@@ -83,10 +82,17 @@ public class DracoMeshManager : MonoBehaviour
             var mesh = new Mesh();
             Mesh.ApplyAndDisposeWritableMeshData(meshDataArray,mesh);
             mesh.RecalculateNormals();
+            mesh.RecalculateBounds();
+            bounds = mesh.bounds;
+            mesh.RecalculateTangents();
+            
             meshFilter.mesh = mesh;
             
             GetComponent<MeshCollider>().sharedMesh = mesh;
             GetComponent<MeshCollider>().convex = true;
+            
+            
+            
             
             
             if (!isStatic)
@@ -124,24 +130,11 @@ public class DracoMeshManager : MonoBehaviour
     
     private void resizeObject()
     {
-        // if(mainCamera == null)
-        //     mainCamera = Camera.main;
-        //
-        // //calcolo della dimensione della mesh
-        // var bounds = GetComponent<MeshRenderer>().bounds;
-        // var size = Mathf.Max(bounds.size.x, bounds.size.y, bounds.size.z);
-        // var distance = (size / (2.0f * Mathf.Tan(mainCamera.fieldOfView * 0.5f * Mathf.Deg2Rad))) + padding;
-        // transform.localScale = Vector3.one * distance;
         
         // Ottieni il bounding box della mesh
-        Bounds bounds = GetComponent<MeshFilter>().mesh.bounds;
-
-        // Calcola la diagonale del bounding box
-        float diagonalLength = bounds.size.magnitude;
-
-        // Normalizza le dimensioni della mesh
-        transform.localScale = Vector3.one;
-        transform.localScale /= diagonalLength;
+        
+        var scaleFactor = normalizedBounds.size.magnitude / (bounds.size.magnitude);
+        transform.localScale = Vector3.one * scaleFactor;
         normalizedScale = transform.localScale;
         
     }
@@ -151,7 +144,6 @@ public class DracoMeshManager : MonoBehaviour
         rotateObject();
         transform.position = startPosition;
         transform.localScale = normalizedScale;
-
     }
     
     bool IsVisibleFromCamera(Camera camera, Renderer renderer)
@@ -182,6 +174,8 @@ public class DracoMeshManager : MonoBehaviour
         DracoMeshManager.instance = this;
     }
 
+    //resize dell'oggetto per far in modo che sia visibile per intero nella telecamera
+    
     
     
    

@@ -62,7 +62,7 @@ public class DracoMeshManager : MonoBehaviour
     public async void ChangeMesh(String path)
     {
         //var fullPath = Path.Combine(Application.streamingAssetsPath, path);
-        var fullPath = Path.Combine(Application.dataPath, path);
+        var fullPath = Path.Combine(Application.temporaryCachePath, path);
 
         var data = await File.ReadAllBytesAsync(fullPath);
         if (data == null) return;

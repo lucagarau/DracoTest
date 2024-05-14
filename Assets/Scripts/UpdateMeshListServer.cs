@@ -7,17 +7,24 @@ using MixedReality.Toolkit.UX.Experimental;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Networking;
-using File = UnityEngine.Windows.File;
+//using File = UnityEngine.Windows.File;
+using File = System.IO.File;
 using Newtonsoft.Json;
+using UnityEngine.Android;
 
 public class updatemeshlistserver : MonoBehaviour
 {
-    private string meshPath = Application.dataPath + "/meshStreaming/";
+    private string meshPath;
     
-    [SerializeField] string meshURL = "http://localhost:8080/";
+    [SerializeField] string meshURL = "http://192.168.229.42:8080/";
     public DracoMeshManager draco;
     [SerializeField] private VirtualizedScrollRectList listView;
     [SerializeField] private GameObject placeholder;
+    [SerializeField] private Boolean localhost = false;
+    
+    [SerializeField] private TextMeshProUGUI DebugText;
+    
+    private string DisplayText ;
 
     
     [Serializable]
@@ -29,23 +36,33 @@ public class updatemeshlistserver : MonoBehaviour
     }
     void Start()
     {
+        if(localhost)
+        {
+            meshURL = "http://localhost:8080/";
+        }
+        meshPath = Application.temporaryCachePath + "/";
+        DebugText = GameObject.Find("DebugText").GetComponent<TextMeshProUGUI>();
+
         //TODO operazione di demo
         //clear meshPath
-        DirectoryInfo di = new DirectoryInfo(meshPath);
-        foreach (FileInfo file in di.GetFiles())
-        {
-            file.Delete();
-        }
+        // ShowMessage("Cancello i file nella cartella meshStreaming");
+        // DirectoryInfo di = new DirectoryInfo(meshPath);
+        // foreach (FileInfo file in di.GetFiles())
+        // {
+        //     file.Delete();
+        // }
+        // ShowMessage("Ho cancella i file nella cartella meshStreaming");
         
         if (draco == null)
         {
             draco = DracoMeshManager.instance;
             return;
         }
-        
-        
-        
-        
+
+
+
+
+        ShowMessage("Inizializzo la lista delle mesh dal server");
         StartCoroutine(DownloadFile("mesh_list.json"));
     }
 
@@ -95,23 +112,126 @@ public class updatemeshlistserver : MonoBehaviour
 
     private IEnumerator DownloadFile(string file)
     {
+        ShowMessage($"Download in corso di {file} da {meshURL + file}");
+        
         if (!File.Exists(meshPath + file))
         {
-
+            ShowMessage("File non trovato in locale, scarico il file dal server");
             var url = meshURL + file;
-            UnityWebRequest request = UnityWebRequest.Get(url);
-            yield return request.SendWebRequest();
 
-            // Controlla se c'è stato un errore durante il download
-            if (request.result != UnityWebRequest.Result.Success)
+            using (UnityWebRequest request = UnityWebRequest.Get(url))
             {
-                Debug.LogError("Errore durante il download del file: " + request.error);
-                yield return null;
-            }
+                yield return request.SendWebRequest();
+                
+                if(Permission.HasUserAuthorizedPermission("android.permission.INTERNET"))
+                {
+                    Debug.Log("Permission granted");
+                    ShowMessage("Permission granted- INTERNET");
+                }
+                else
+                {
+                    Debug.Log("Permission not granted");
+                    Permission.RequestUserPermission("android.permission.INTERNET");
+                }
+                
+                if(Permission.HasUserAuthorizedPermission("android.permission.WRITE_EXTERNAL_STORAGE"))
+                {
+                    Debug.Log("Permission granted");
+                    ShowMessage("Permission granted- WRITE_EXTERNAL_STORAGE");
+                }
+                else
+                {
+                    Debug.Log("Permission not granted");
+                    Permission.RequestUserPermission("android.permission.WRITE_EXTERNAL_STORAGE");
+                }
 
-            // Salva il file scaricato nella directory locale
-            string filePath = meshPath + file;
-            System.IO.File.WriteAllBytes(filePath, request.downloadHandler.data);
+                if (Permission.HasUserAuthorizedPermission("android.permission.READ_EXTERNAL_STORAGE"))
+                {
+                    Debug.Log("Permission granted");
+                    ShowMessage("Permission granted- READ_EXTERNAL_STORAGE");
+                }
+                else
+                {
+                    Debug.Log("Permission not granted");
+                    Permission.RequestUserPermission("android.permission.READ_EXTERNAL_STORAGE");
+                }
+                
+                if (Permission.HasUserAuthorizedPermission("android.permission.ACCESS_NETWORK_STATE"))
+                {
+                    Debug.Log("Permission granted");
+                    ShowMessage("Permission granted- ACCESS_NETWORK_STATE");
+                }
+                else
+                {
+                    Debug.Log("Permission not granted");
+                    Permission.RequestUserPermission("android.permission.ACCESS_NETWORK_STATE");
+                }
+                
+                if(Permission.HasUserAuthorizedPermission("android.permission.ACCESS_WIFI_STATE"))
+                {
+                    Debug.Log("Permission granted");
+                    ShowMessage("Permission granted- ACCESS_WIFI_STATE");
+                }
+                else
+                {
+                    Debug.Log("Permission not granted");
+                    Permission.RequestUserPermission("android.permission.ACCESS_WIFI_STATE");
+                }
+                
+                if(Permission.HasUserAuthorizedPermission("android.permission.READ_INTERNAL_STORAGE"))
+                {
+                    Debug.Log("Permission granted");
+                    ShowMessage("Permission granted- READ_INTERNAL_STORAGE");
+                }
+                else
+                {
+                    Debug.Log("Permission not granted");
+                    Permission.RequestUserPermission("android.permission.READ_INTERNAL_STORAGE");
+                }
+                
+                if(Permission.HasUserAuthorizedPermission("android.permission.WRITE_INTERNAL_STORAGE"))
+                {
+                    Debug.Log("Permission granted");
+                    ShowMessage("Permission granted- WRITE_INTERNAL_STORAGE");
+                }
+                else
+                {
+                    Debug.Log("Permission not granted");
+                    Permission.RequestUserPermission("android.permission.WRITE_INTERNAL_STORAGE");
+                }
+                
+                
+                
+
+                switch (request.result)
+                {
+                    case UnityWebRequest.Result.ConnectionError:
+                        Debug.LogError("Errore di connessione durante il download del file: " + request.error);
+                        ShowMessage("Errore di connessione durante il download del file: " + request.error);
+                        break;
+                    case UnityWebRequest.Result.DataProcessingError:
+                        Debug.LogError("Errore durante il download del file: " + request.error);
+                        ShowMessage("Errore durante il download del file: " + request.error);
+                        break;
+                    case UnityWebRequest.Result.ProtocolError:
+                        Debug.LogError("Errore durante il download del file: " + request.error);
+                        ShowMessage("Errore durante il download del file: " + request.error);
+                        break;
+                    case UnityWebRequest.Result.Success:
+                        Debug.Log("Download completato");
+                        ShowMessage("Download completato");
+                        // Salva il file scaricato nella directory locale
+                        string filePath = meshPath + file;
+                        File.WriteAllBytes(filePath, request.downloadHandler.data);
+                        Debug.Log(filePath);
+                        ShowMessage("mesh scaricata correttamente: "+ filePath);
+                        break;
+                }
+            }
+            
+          
+
+            
         }
 
         if (file == "mesh_list.json")
@@ -201,6 +321,16 @@ public class updatemeshlistserver : MonoBehaviour
         {
             newMeshButton();
         }
+        
+        //place text
+        Rect textArea = new Rect(10, 10, 200, 50);
+        GUI.Label(textArea, DisplayText);
+    }
+    
+    public void ShowMessage(string msg)
+    {
+        DisplayText = msg;
+        DebugText.text = msg;
     }
 }
 

@@ -9,13 +9,14 @@
       <change beforePath="$PROJECT_DIR$/Assets/Scenes/DemoServer.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/DemoServer.unity" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/DracoMeshManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/DracoMeshManager.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/UpdateMeshListServer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/UpdateMeshListServer.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/sliderScript.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/sliderScript.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/meshStreaming/34785.drc" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/meshStreaming/alligator.drc" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/meshStreaming/armadillo.drc" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/meshStreaming/beast.drc" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/meshStreaming/mesh_list.json" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/meshStreaming/mesh_list.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/XR/Settings/OpenXR Package Settings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/XR/Settings/OpenXR Package Settings.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/XR/XRGeneralSettingsPerBuildTarget.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/XR/XRGeneralSettingsPerBuildTarget.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/meshStreaming/beetle-alt.drc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Packages/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/manifest.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Packages/packages-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/packages-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectSettings/EditorBuildSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/EditorBuildSettings.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectSettings/ProjectSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/ProjectSettings.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/distr/DracoTest_BurstDebugInformation_DoNotShip/tempburstlibs/armeabi-v7a/lib_burst_generated.txt" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -121,7 +122,17 @@
       <workItem from="1714731044159" duration="1404000" />
       <workItem from="1714742227532" duration="2003000" />
       <workItem from="1714989482325" duration="3510000" />
-      <workItem from="1715010077385" duration="617000" />
+      <workItem from="1715010077385" duration="851000" />
+      <workItem from="1715074752377" duration="181000" />
+      <workItem from="1715074961304" duration="874000" />
+      <workItem from="1715087616828" duration="1634000" />
+      <workItem from="1715094119045" duration="3056000" />
+      <workItem from="1715260475212" duration="5612000" />
+      <workItem from="1715271315441" duration="618000" />
+      <workItem from="1715346764017" duration="1973000" />
+      <workItem from="1715352022969" duration="4427000" />
+      <workItem from="1715677853678" duration="1084000" />
+      <workItem from="1715684909337" duration="2431000" />
     </task>
     <servers />
   </component>

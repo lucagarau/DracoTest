@@ -9,29 +9,36 @@ using MixedReality.Toolkit.SpatialManipulation;
 
 public class DracoMeshManager : MonoBehaviour
 {
+    static private List<DracoMeshManager> Instances;
+    
     [SerializeField] Camera mainCamera = null;
-    [SerializeField] float padding = 0.01f;
     [SerializeField] private Boolean isStatic = false;
     [SerializeField] private Mesh placeholderMesh = null;
     [SerializeField] private string meshPath = null;
-    private Vector3 startPosition;
-    private Vector3 normalizedScale = Vector3.one;
-
-   static private List<DracoMeshManager> Instances;
-   //static private LinkedList<DracoMeshManager> Instances;
-   //static private Dictionary<DracoMeshManager,>
     
+    //metadati della mesh
+    private string Name { set; get; }
+    private uint Size { set; get; }
+    private float DecompressionTime { set; get; }
+    private float DownloadTime { set; get; }
+    
+    //variabili per la gestione della mesh
     private MeshFilter meshFilter;
     private Renderer renderer;
     private bool isVisible = false;
     
+    //variabili per il ridimensionamento dell'oggetto
     private Bounds normalizedBounds;
     private Bounds bounds;
+    private Vector3 startPosition;
+    private Vector3 normalizedScale = Vector3.one;
 
     private void Start()
     {
-        startPosition = transform.position;
+        DecompressionTime = 0;
+        DownloadTime = 0;
         
+        startPosition = transform.position;
         meshFilter = GetComponent<MeshFilter>();
         renderer = GetComponent<Renderer>();
         normalizedBounds = renderer.bounds;
@@ -76,6 +83,8 @@ public class DracoMeshManager : MonoBehaviour
 
     public async void ChangeMesh(String path)
     {
+        var stopwatch = new System.Diagnostics.Stopwatch();
+        stopwatch.Start();
         //var fullPath = Path.Combine(Application.streamingAssetsPath, path);
         var fullPath = Path.Combine(Application.temporaryCachePath, path);
 
@@ -106,10 +115,6 @@ public class DracoMeshManager : MonoBehaviour
             GetComponent<MeshCollider>().sharedMesh = mesh;
             GetComponent<MeshCollider>().convex = true;
             
-            
-            
-            
-            
             if (!isStatic)
             {
                 //ridimensionamento dell'oggetto
@@ -117,6 +122,9 @@ public class DracoMeshManager : MonoBehaviour
                 //rotazione dell'oggetto
                 rotateObject();
             }
+            stopwatch.Stop();
+            DecompressionTime = stopwatch.ElapsedMilliseconds;
+            PrintManager.UpdateMeshInfo(this);
         }
         else
         {
@@ -124,16 +132,6 @@ public class DracoMeshManager : MonoBehaviour
         }
     }   
     
-    public void InvokeMethod(string method, string path)
-    {
-        var methodInfo = GetType().GetMethod(method);
-        if (methodInfo == null)
-        {
-            Debug.LogError("Method not found");
-            return;
-        }
-        methodInfo.Invoke(this, new object[] {path});
-    }
     
     private void rotateObject()
     {
@@ -195,6 +193,7 @@ public class DracoMeshManager : MonoBehaviour
         if (Instances.Contains(instance))
             Instances.Remove(instance);
         Instances.Add(instance);
+        PrintManager.UpdateMeshInfo(instance);
     }
     
     
@@ -203,11 +202,20 @@ public class DracoMeshManager : MonoBehaviour
         return Instances;
     }
 
+    public void SetDownloadTime(float time)
+    {
+        DownloadTime = time;
+    }
     
+    public float GetDownloadTime()
+    {
+        return DownloadTime;
+    }
     
-    
-   
-    
+    public float GetDecompressionTime()
+    {
+        return DecompressionTime;
+    }
     
 }
 

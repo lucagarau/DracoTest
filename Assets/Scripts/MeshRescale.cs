@@ -2,26 +2,7 @@ using UnityEngine;
 
 public class MeshRescale : MonoBehaviour
 {
-/*
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireCube(transform.position, desiredsize);
-    }
 
-    private void Start()
-    {
-        Resize(ObjectToRescale, desiredsize);
-
-    }
-
-    private void OnGUI()
-    {
-        if (GUILayout.Button("Resize"))
-        {
-            Resize(ObjectToRescale, desiredsize);
-        }
-    }*/
     
     public void Resize(GameObject toRescale, Vector3 desiredsize)
     {

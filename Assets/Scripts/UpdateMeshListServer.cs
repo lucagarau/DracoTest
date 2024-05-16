@@ -22,9 +22,7 @@ public class updatemeshlistserver : MonoBehaviour
     [SerializeField] private GameObject placeholder;
     [SerializeField] private Boolean localhost = false;
     
-    [SerializeField] private TextMeshProUGUI DebugText;
     
-    private string DisplayText ;
 
     
     [Serializable]
@@ -41,19 +39,18 @@ public class updatemeshlistserver : MonoBehaviour
             meshURL = "http://localhost:8080/";
         }
         meshPath = Application.temporaryCachePath + "/";
-        DebugText = GameObject.Find("DebugText").GetComponent<TextMeshProUGUI>();
 
         //TODO operazione di demo
         //clear meshPath
-        // ShowMessage("Cancello i file nella cartella meshStreaming");
-        // DirectoryInfo di = new DirectoryInfo(meshPath);
-        // foreach (FileInfo file in di.GetFiles())
-        // {
-        //     file.Delete();
-        // }
-        // ShowMessage("Ho cancella i file nella cartella meshStreaming");
+        // PrintManager.ShowMessage("Cancello i file nella cartella meshStreaming");
+        DirectoryInfo di = new DirectoryInfo(meshPath);
+        foreach (FileInfo file in di.GetFiles())
+        {
+             file.Delete();
+        }
+        // PrintManager.ShowMessage("Ho cancella i file nella cartella meshStreaming");
         
-        ShowMessage("Inizializzo la lista delle mesh dal server");
+        PrintManager.ShowMessage("Inizializzo la lista delle mesh dal server");
         StartCoroutine(DownloadFile("mesh_list.json"));
     }
 
@@ -103,11 +100,14 @@ public class updatemeshlistserver : MonoBehaviour
 
     private IEnumerator DownloadFile(string file)
     {
-        ShowMessage($"Download in corso di {file} da {meshURL + file}");
+        var stopWatch = new System.Diagnostics.Stopwatch();
+        
+        PrintManager.ShowMessage($"Download in corso di {file} da {meshURL + file}");
         
         if (!File.Exists(meshPath + file))
         {
-            ShowMessage("File non trovato in locale, scarico il file dal server");
+            stopWatch.Start();
+            PrintManager.ShowMessage("File non trovato in locale, scarico il file dal server");
             var url = meshURL + file;
 
             using (UnityWebRequest request = UnityWebRequest.Get(url))
@@ -118,31 +118,28 @@ public class updatemeshlistserver : MonoBehaviour
                 {
                     case UnityWebRequest.Result.ConnectionError:
                         Debug.LogError("Errore di connessione durante il download del file: " + request.error);
-                        ShowMessage("Errore di connessione durante il download del file: " + request.error);
+                        PrintManager.ShowMessage("Errore di connessione durante il download del file: " + request.error);
                         break;
                     case UnityWebRequest.Result.DataProcessingError:
                         Debug.LogError("Errore durante il download del file: " + request.error);
-                        ShowMessage("Errore durante il download del file: " + request.error);
+                        PrintManager.ShowMessage("Errore durante il download del file: " + request.error);
                         break;
                     case UnityWebRequest.Result.ProtocolError:
                         Debug.LogError("Errore durante il download del file: " + request.error);
-                        ShowMessage("Errore durante il download del file: " + request.error);
+                        PrintManager.ShowMessage("Errore durante il download del file: " + request.error);
                         break;
                     case UnityWebRequest.Result.Success:
                         Debug.Log("Download completato");
-                        ShowMessage("Download completato");
+                        PrintManager.ShowMessage("Download completato");
                         // Salva il file scaricato nella directory locale
                         string filePath = meshPath + file;
                         File.WriteAllBytes(filePath, request.downloadHandler.data);
                         Debug.Log(filePath);
-                        ShowMessage("mesh scaricata correttamente: "+ filePath);
+                        PrintManager.ShowMessage("mesh scaricata correttamente: "+ filePath);
                         break;
                 }
             }
-            
-          
-
-            
+            stopWatch.Stop();
         }
 
         if (file == "mesh_list.json")
@@ -160,6 +157,7 @@ public class updatemeshlistserver : MonoBehaviour
             Debug.Log("Cambio della mesh: " + file);
             if (DracoMeshManager.GetInstances().Count == 0) newMeshButton();
             DracoMeshManager.GetInstances().Last().ChangeMesh(meshPath + file);
+            DracoMeshManager.GetInstances().Last().SetDownloadTime(stopWatch.ElapsedMilliseconds);
         }
 
 
@@ -235,15 +233,8 @@ public class updatemeshlistserver : MonoBehaviour
             newMeshButton();
         }
         
-        //place text
-        Rect textArea = new Rect(10, 10, 200, 50);
-        GUI.Label(textArea, DisplayText);
     }
     
-    public void ShowMessage(string msg)
-    {
-        DisplayText = msg;
-        DebugText.text = msg;
-    }
+    
 }
 

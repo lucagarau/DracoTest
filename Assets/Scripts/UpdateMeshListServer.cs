@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using MixedReality.Toolkit.UX;
 using MixedReality.Toolkit.UX.Experimental;
 using TMPro;
@@ -17,7 +18,6 @@ public class updatemeshlistserver : MonoBehaviour
     private string meshPath;
     
     [SerializeField] string meshURL = "http://192.168.229.42:8080/";
-    public DracoMeshManager draco;
     [SerializeField] private VirtualizedScrollRectList listView;
     [SerializeField] private GameObject placeholder;
     [SerializeField] private Boolean localhost = false;
@@ -53,15 +53,6 @@ public class updatemeshlistserver : MonoBehaviour
         // }
         // ShowMessage("Ho cancella i file nella cartella meshStreaming");
         
-        if (draco == null)
-        {
-            draco = DracoMeshManager.instance;
-            return;
-        }
-
-
-
-
         ShowMessage("Inizializzo la lista delle mesh dal server");
         StartCoroutine(DownloadFile("mesh_list.json"));
     }
@@ -123,86 +114,6 @@ public class updatemeshlistserver : MonoBehaviour
             {
                 yield return request.SendWebRequest();
                 
-                if(Permission.HasUserAuthorizedPermission("android.permission.INTERNET"))
-                {
-                    Debug.Log("Permission granted");
-                    ShowMessage("Permission granted- INTERNET");
-                }
-                else
-                {
-                    Debug.Log("Permission not granted");
-                    Permission.RequestUserPermission("android.permission.INTERNET");
-                }
-                
-                if(Permission.HasUserAuthorizedPermission("android.permission.WRITE_EXTERNAL_STORAGE"))
-                {
-                    Debug.Log("Permission granted");
-                    ShowMessage("Permission granted- WRITE_EXTERNAL_STORAGE");
-                }
-                else
-                {
-                    Debug.Log("Permission not granted");
-                    Permission.RequestUserPermission("android.permission.WRITE_EXTERNAL_STORAGE");
-                }
-
-                if (Permission.HasUserAuthorizedPermission("android.permission.READ_EXTERNAL_STORAGE"))
-                {
-                    Debug.Log("Permission granted");
-                    ShowMessage("Permission granted- READ_EXTERNAL_STORAGE");
-                }
-                else
-                {
-                    Debug.Log("Permission not granted");
-                    Permission.RequestUserPermission("android.permission.READ_EXTERNAL_STORAGE");
-                }
-                
-                if (Permission.HasUserAuthorizedPermission("android.permission.ACCESS_NETWORK_STATE"))
-                {
-                    Debug.Log("Permission granted");
-                    ShowMessage("Permission granted- ACCESS_NETWORK_STATE");
-                }
-                else
-                {
-                    Debug.Log("Permission not granted");
-                    Permission.RequestUserPermission("android.permission.ACCESS_NETWORK_STATE");
-                }
-                
-                if(Permission.HasUserAuthorizedPermission("android.permission.ACCESS_WIFI_STATE"))
-                {
-                    Debug.Log("Permission granted");
-                    ShowMessage("Permission granted- ACCESS_WIFI_STATE");
-                }
-                else
-                {
-                    Debug.Log("Permission not granted");
-                    Permission.RequestUserPermission("android.permission.ACCESS_WIFI_STATE");
-                }
-                
-                if(Permission.HasUserAuthorizedPermission("android.permission.READ_INTERNAL_STORAGE"))
-                {
-                    Debug.Log("Permission granted");
-                    ShowMessage("Permission granted- READ_INTERNAL_STORAGE");
-                }
-                else
-                {
-                    Debug.Log("Permission not granted");
-                    Permission.RequestUserPermission("android.permission.READ_INTERNAL_STORAGE");
-                }
-                
-                if(Permission.HasUserAuthorizedPermission("android.permission.WRITE_INTERNAL_STORAGE"))
-                {
-                    Debug.Log("Permission granted");
-                    ShowMessage("Permission granted- WRITE_INTERNAL_STORAGE");
-                }
-                else
-                {
-                    Debug.Log("Permission not granted");
-                    Permission.RequestUserPermission("android.permission.WRITE_INTERNAL_STORAGE");
-                }
-                
-                
-                
-
                 switch (request.result)
                 {
                     case UnityWebRequest.Result.ConnectionError:
@@ -247,7 +158,8 @@ public class updatemeshlistserver : MonoBehaviour
         else
         {
             Debug.Log("Cambio della mesh: " + file);
-            draco.ChangeMesh(meshPath + file);
+            if (DracoMeshManager.GetInstances().Count == 0) newMeshButton();
+            DracoMeshManager.GetInstances().Last().ChangeMesh(meshPath + file);
         }
 
 
@@ -281,25 +193,26 @@ public class updatemeshlistserver : MonoBehaviour
 
     public void ResetMeshButton()
     {
-        if (draco == null) return;
-        draco.ResetObject();
+        if (DracoMeshManager.GetInstances().Count == 0) return;
+        DracoMeshManager.GetInstances().Last().ResetObject();
     }
     
     public void DeleteMeshButton()
     {
-        if (draco == null) return;
-        var go = draco.gameObject;
-        Destroy(go);
+        if (DracoMeshManager.GetInstances().Count == 0) return;
+        var draco = DracoMeshManager.GetInstances().Last();
+       Destroy(DracoMeshManager.GetInstances().Last().gameObject);
+       DracoMeshManager.GetInstances().Remove(draco);
     }
     
     public void newMeshButton()
     {
         if(placeholder == null) return;
         var go = Instantiate(placeholder, new Vector3(0, 0, 0), Quaternion.identity);
-        draco = go.GetComponent<DracoMeshManager>();
+        var draco = go.GetComponent<DracoMeshManager>();
         if (draco!= null)
         {
-            DracoMeshManager.instance = draco;
+            DracoMeshManager.SetInstance(draco);
         }
         else
         {

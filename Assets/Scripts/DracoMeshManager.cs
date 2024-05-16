@@ -1,7 +1,10 @@
 using System;
+using System.Collections.Generic;
+using System.Data;
 using System.IO;
 using UnityEngine;
 using Draco;
+using MixedReality.Toolkit.SpatialManipulation;
 
 
 public class DracoMeshManager : MonoBehaviour
@@ -13,8 +16,10 @@ public class DracoMeshManager : MonoBehaviour
     [SerializeField] private string meshPath = null;
     private Vector3 startPosition;
     private Vector3 normalizedScale = Vector3.one;
-    
-    static public DracoMeshManager instance;
+
+   static private List<DracoMeshManager> Instances;
+   //static private LinkedList<DracoMeshManager> Instances;
+   //static private Dictionary<DracoMeshManager,>
     
     private MeshFilter meshFilter;
     private Renderer renderer;
@@ -35,6 +40,16 @@ public class DracoMeshManager : MonoBehaviour
             GetComponent<MeshFilter>().mesh = placeholderMesh;
         }
         
+        if(Instances == null)
+        {
+            Instances = new List<DracoMeshManager>();
+        }
+        
+        GetComponent<ObjectManipulator>().selectEntered.AddListener((t0) =>
+        {
+           SetInstance(this);
+        });
+        SetInstance(this);
         //resizeObject();
     }
 
@@ -168,13 +183,26 @@ public class DracoMeshManager : MonoBehaviour
         return false; // L'oggetto non è visibile nella telecamera o non è valido
     }
     
-    public void OnTouch()
+    public static void SetInstance(DracoMeshManager instance)
     {
-        Debug.Log("Touched");
-        DracoMeshManager.instance = this;
+        Debug.Log("Setto l'istanza a " + instance.gameObject.name );
+        
+        if (Instances == null)
+        {
+            Instances = new List<DracoMeshManager>();
+        }
+
+        if (Instances.Contains(instance))
+            Instances.Remove(instance);
+        Instances.Add(instance);
+    }
+    
+    
+    public static List<DracoMeshManager> GetInstances()
+    {
+        return Instances;
     }
 
-    //resize dell'oggetto per far in modo che sia visibile per intero nella telecamera
     
     
     

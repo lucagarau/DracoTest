@@ -16,11 +16,13 @@ using UnityEngine.Android;
 public class updatemeshlistserver : MonoBehaviour
 {
     private string meshPath;
+    private string _OfflineMeshPath = Application.dataPath + "/meshes";
     
     [SerializeField] string meshURL = "http://192.168.229.42:8080/";
     [SerializeField] private VirtualizedScrollRectList listView;
     [SerializeField] private GameObject placeholder;
     [SerializeField] private Boolean localhost = false;
+    private Boolean _onlineMode = true;
     
     
 
@@ -41,17 +43,23 @@ public class updatemeshlistserver : MonoBehaviour
         meshPath = Application.temporaryCachePath + "/";
 
         //TODO operazione di demo
-        //clear meshPath
-        // PrintManager.ShowMessage("Cancello i file nella cartella meshStreaming");
         DirectoryInfo di = new DirectoryInfo(meshPath);
         foreach (FileInfo file in di.GetFiles())
         {
              file.Delete();
         }
-        // PrintManager.ShowMessage("Ho cancella i file nella cartella meshStreaming");
         
-        PrintManager.ShowMessage("Inizializzo la lista delle mesh dal server");
-        StartCoroutine(DownloadFile("mesh_list.json"));
+        if (_onlineMode)
+        {
+            PrintManager.ShowMessage("Inizializzo la lista delle mesh dal server");
+            StartCoroutine(DownloadFile("mesh_list.json"));   
+        }
+
+        else
+        {
+            UpdateList();
+            PrintManager.ShowMessage("Inizializzo la lista delle mesh in locale");
+        }
     }
 
     void UpdateList()
@@ -62,9 +70,17 @@ public class updatemeshlistserver : MonoBehaviour
             return;
         }
 
-        List<string> tmp = ReadMeshList();
-        string[] meshFiles = tmp.ToArray();
-       
+        string[] meshFiles;
+        if (_onlineMode)
+        {
+            List<string> tmp = ReadMeshList();
+            meshFiles = tmp.ToArray();
+        }
+        else
+        {
+           meshFiles = Directory.GetFiles(_OfflineMeshPath, "*.drc");
+        }
+
         listView.SetItemCount(meshFiles.Length);
 
         listView.OnVisible = (go, i) =>
@@ -73,7 +89,16 @@ public class updatemeshlistserver : MonoBehaviour
             {
                 button.gameObject.name = "mesh " + i;
                 var meshfile = meshFiles[i];
-                button.OnClicked.AddListener(() => StartCoroutine(DownloadFile(meshfile)));
+                if(_onlineMode) 
+                    button.OnClicked.AddListener(() => StartCoroutine(DownloadFile(meshfile)));
+                else
+                {
+                    button.OnClicked.AddListener(() =>
+                    {
+                        if (DracoMeshManager.GetInstances().Count == 0) newMeshButton();
+                        DracoMeshManager.GetInstances().Last().ChangeMesh(meshFiles[i]);
+                    });
+                }
 
 
 
@@ -81,8 +106,9 @@ public class updatemeshlistserver : MonoBehaviour
 
             foreach (var text in go.GetComponentsInChildren<TextMeshProUGUI>())
             {
+                var meshName = _onlineMode ? meshFiles[i] : meshFiles[i].Substring(meshFiles[i].LastIndexOf('/') + 1);
                 if (text.gameObject.name == "Text")
-                    text.text = $"{meshFiles[i]}";
+                    text.text = $"{meshName}";
             }
 
 
@@ -216,6 +242,12 @@ public class updatemeshlistserver : MonoBehaviour
         {
             Debug.LogError("DracoMeshManager non trovato nel nuovo oggetto");
         }
+    }
+    
+    public void SetOnlineMode(bool mode)
+    {
+        _onlineMode = mode;
+        Start();
     }
 
     private void OnGUI()

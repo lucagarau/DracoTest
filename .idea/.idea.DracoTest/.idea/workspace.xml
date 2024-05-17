@@ -7,9 +7,8 @@
     <list default="true" id="3a8cb324-3b5e-4397-913c-2471c26700b2" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.DracoTest/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.DracoTest/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scenes/DemoServer.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/DemoServer.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DracoMeshManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/DracoMeshManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/MeshRescale.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/MeshRescale.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/UpdateMeshListServer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/UpdateMeshListServer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/XR/XRGeneralSettingsPerBuildTarget.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/XR/XRGeneralSettingsPerBuildTarget.asset" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -126,7 +125,9 @@
       <workItem from="1715352022969" duration="4427000" />
       <workItem from="1715677853678" duration="1084000" />
       <workItem from="1715684909337" duration="2634000" />
-      <workItem from="1715852636589" duration="9709000" />
+      <workItem from="1715852636589" duration="9965000" />
+      <workItem from="1715937234907" duration="100000" />
+      <workItem from="1715937358152" duration="2721000" />
     </task>
     <servers />
   </component>

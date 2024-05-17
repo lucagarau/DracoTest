@@ -7,8 +7,7 @@
     <list default="true" id="3a8cb324-3b5e-4397-913c-2471c26700b2" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.DracoTest/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.DracoTest/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scenes/DemoServer.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/DemoServer.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/UpdateMeshListServer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/UpdateMeshListServer.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/XR/XRGeneralSettingsPerBuildTarget.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/XR/XRGeneralSettingsPerBuildTarget.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectSettings/ProjectSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/ProjectSettings.asset" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -19,6 +18,7 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/DebugConsole/VRDebug.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/org.mixedrealitytoolkit.uxcore@fc881d722d9c/Button/StatefulInteractableColliderToggle.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/org.mixedrealitytoolkit.uxcore@fc881d722d9c/Pulse/InteractablePulse.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/org.mixedrealitytoolkit.uxcore@fc881d722d9c/SeeItSayIt/SeeItSayItLabelEnabler.cs" root0="SKIP_HIGHLIGHTING" />
@@ -127,7 +127,8 @@
       <workItem from="1715684909337" duration="2634000" />
       <workItem from="1715852636589" duration="9965000" />
       <workItem from="1715937234907" duration="100000" />
-      <workItem from="1715937358152" duration="2721000" />
+      <workItem from="1715937358152" duration="3373000" />
+      <workItem from="1715951626978" duration="1790000" />
     </task>
     <servers />
   </component>

@@ -16,16 +16,13 @@ using UnityEngine.Android;
 public class updatemeshlistserver : MonoBehaviour
 {
     private string meshPath;
-    private string _OfflineMeshPath = Application.dataPath + "/meshes";
+    private string _OfflineMeshPath = Application.streamingAssetsPath + "/meshes";
     
     [SerializeField] string meshURL = "http://192.168.229.42:8080/";
     [SerializeField] private VirtualizedScrollRectList listView;
     [SerializeField] private GameObject placeholder;
     [SerializeField] private Boolean localhost = false;
     private Boolean _onlineMode = true;
-    
-    
-
     
     [Serializable]
     public class FileData

@@ -6,8 +6,67 @@
   <component name="ChangeListManager">
     <list default="true" id="3a8cb324-3b5e-4397-913c-2471c26700b2" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.DracoTest/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.DracoTest/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/DemoServer.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/DemoServer.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectSettings/ProjectSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/ProjectSettings.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/UpdateMeshListServer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/UpdateMeshListServer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/meshes/34785.drc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/meshes/34785.drc.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/meshes/36069.drc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/meshes/36069.drc.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/meshes/36086.drc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/meshes/36086.drc.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/meshes/36088.drc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/meshes/36088.drc.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/meshes/alligator.drc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/meshes/alligator.drc.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/meshes/armadillo.drc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/meshes/armadillo.drc.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/meshes/beast.drc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/meshes/beast.drc.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/meshes/beetle-alt.drc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/meshes/beetle-alt.drc.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/meshes/beetle.drc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/meshes/beetle.drc.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/meshes/bimba.drc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/meshes/bimba.drc.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/meshes/cheburashka.drc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/meshes/cheburashka.drc.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/meshes/cow.drc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/meshes/cow.drc.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/meshes/fandisk.drc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/meshes/fandisk.drc.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/meshes/happy.drc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/meshes/happy.drc.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/meshes/homer.drc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/meshes/homer.drc.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/meshes/horse.drc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/meshes/horse.drc.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/meshes/igea.drc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/meshes/igea.drc.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/meshes/lucy.drc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/meshes/lucy.drc.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/meshes/m1.drc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/meshes/m1.drc.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/meshes/m2.drc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/meshes/m2.drc.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/meshes/max-planck.drc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/meshes/max-planck.drc.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/meshes/nefertiti.drc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/meshes/nefertiti.drc.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/meshes/ogre.drc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/meshes/ogre.drc.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/meshes/rocker-arm.drc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/meshes/rocker-arm.drc.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/meshes/spot.drc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/meshes/spot.drc.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/meshes/stanford-bunny.drc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/meshes/stanford-bunny.drc.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/meshes/suzanne.drc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/meshes/suzanne.drc.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/meshes/teapot.drc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/meshes/teapot.drc.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/meshes/woody.drc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/meshes/woody.drc.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/meshes/xyzrgb_dragon.drc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/meshes/xyzrgb_dragon.drc.meta" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -128,7 +187,7 @@
       <workItem from="1715852636589" duration="9965000" />
       <workItem from="1715937234907" duration="100000" />
       <workItem from="1715937358152" duration="3373000" />
-      <workItem from="1715951626978" duration="1790000" />
+      <workItem from="1715951626978" duration="2949000" />
     </task>
     <servers />
   </component>

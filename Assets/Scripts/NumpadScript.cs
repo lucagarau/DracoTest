@@ -44,4 +44,9 @@ public class NumpadScript : MonoBehaviour
         
         
     }
+    
+    public void toggleNumpad()
+    {
+        gameObject.SetActive(!gameObject.activeSelf);
+    }
 }

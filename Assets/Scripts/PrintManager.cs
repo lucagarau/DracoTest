@@ -10,12 +10,17 @@ public class PrintManager : MonoBehaviour
     private static TextMeshProUGUI DebugText;
     private static TextMeshProUGUI DownloadText;
     private static TextMeshProUGUI DecompressionText;
+    private static TextMeshProUGUI VtxText;
+    private static TextMeshProUGUI FacesText;
+    private static TextMeshProUGUI SizeText;
 
     private void Start()
     {
         DebugText = GameObject.Find("DebugText").GetComponent<TextMeshProUGUI>();
         DownloadText = GameObject.Find("DownloadTimeText").GetComponent<TextMeshProUGUI>();
         DecompressionText = GameObject.Find("DecoTimeText").GetComponent<TextMeshProUGUI>();
+        VtxText = GameObject.Find("VtxText").GetComponent<TextMeshProUGUI>();
+        FacesText = GameObject.Find("FacesText").GetComponent<TextMeshProUGUI>();
     }
 
     public static void ShowMessage(string msg)
@@ -36,6 +41,9 @@ public class PrintManager : MonoBehaviour
         if (draco == null) return;
         DownloadText.text = draco.GetDownloadTime().ToString() + " ms";
         DecompressionText.text =draco.GetDecompressionTime().ToString() + " ms";
+        VtxText.text = draco.GetVtxCount().ToString();
+        FacesText.text = draco.GetFacesCount().ToString();
+        //SizeText.text = draco.GetSize().ToString() + " Kb";
         
     }
 }

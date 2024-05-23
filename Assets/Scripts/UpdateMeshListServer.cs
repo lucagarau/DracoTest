@@ -12,13 +12,17 @@ using UnityEngine.Networking;
 using File = System.IO.File;
 using Newtonsoft.Json;
 using UnityEngine.Android;
+using UnityEngine.UI;
 
 public class updatemeshlistserver : MonoBehaviour
 {
     private string meshPath;
     private string _OfflineMeshPath = Application.streamingAssetsPath + "/meshes";
+
+    [SerializeField] private string ip = "192.168.229.42";
+    [SerializeField] private string meshURL;
+    [SerializeField] private TextMeshProUGUI ipInputField;
     
-    [SerializeField] string meshURL = "http://192.168.229.42:8080/";
     [SerializeField] private VirtualizedScrollRectList listView;
     [SerializeField] private GameObject placeholder;
     [SerializeField] private Boolean localhost = false;
@@ -33,10 +37,17 @@ public class updatemeshlistserver : MonoBehaviour
     }
     void Start()
     {
+        ipInputField.text = ip;
+        
         if(localhost)
         {
             meshURL = "http://localhost:8080/";
         }
+        else
+        {
+            meshURL = "http://" + ip + ":8080/";
+        }
+        Debug.Log("URL: " + meshURL);
         meshPath = Application.temporaryCachePath + "/";
 
         //TODO operazione di demo
@@ -264,6 +275,11 @@ public class updatemeshlistserver : MonoBehaviour
         
     }
     
+    public void SetIp()
+    {
+        ip = ipInputField.text;
+        Start();
+    }
     
 }
 

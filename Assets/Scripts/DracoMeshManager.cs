@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
@@ -21,6 +22,8 @@ public class DracoMeshManager : MonoBehaviour
     private uint Size { set; get; }
     private float DecompressionTime { set; get; }
     private float DownloadTime { set; get; }
+    private int VtxCount { set; get; }
+    private int FacesCount { set; get; }
     
     //variabili per la gestione della mesh
     private MeshFilter meshFilter;
@@ -41,6 +44,10 @@ public class DracoMeshManager : MonoBehaviour
         startPosition = transform.position;
         meshFilter = GetComponent<MeshFilter>();
         renderer = GetComponent<Renderer>();
+        
+        VtxCount = meshFilter.mesh.vertexCount;
+        FacesCount = meshFilter.mesh.triangles.Length;
+        
         normalizedBounds = renderer.bounds;
         if (isStatic && placeholderMesh != null)
         {
@@ -124,6 +131,10 @@ public class DracoMeshManager : MonoBehaviour
             }
             stopwatch.Stop();
             DecompressionTime = stopwatch.ElapsedMilliseconds;
+            VtxCount = mesh.vertexCount;
+            FacesCount = mesh.triangles.Length;
+            
+            
             PrintManager.UpdateMeshInfo(this);
         }
         else
@@ -217,6 +228,20 @@ public class DracoMeshManager : MonoBehaviour
         return DecompressionTime;
     }
     
+    public int GetVtxCount()
+    {
+        return VtxCount;
+    }
+    
+    public int GetFacesCount()
+    {
+        return FacesCount;
+    }
+    
+    public uint GetSize()
+    {
+        return Size;
+    }
 }
 
 

@@ -8,9 +8,12 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/SampleScene.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/DemoServer.unity
     guid: 41319ff6d7951db4b96f947e9bc214b4
+  - enabled: 1
+    path: Assets/Scenes/DemoServer v2.unity
+    guid: 5204fb0fb3bb0364e9ee2dfccb3c97ec
   m_configObjects:
     Unity.XR.Oculus.Settings: {fileID: 11400000, guid: 123960f09ed0e0d44ae192827ef623af, type: 2}
     com.unity.xr.arfoundation.simulation_settings: {fileID: 11400000, guid: 7a647d9c0264ff54b9326b579c80bcaa, type: 2}

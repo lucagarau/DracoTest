@@ -4,12 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3a8cb324-3b5e-4397-913c-2471c26700b2" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.DracoTest/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.DracoTest/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/NumpadScript.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/NumpadScript.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/TextMesh Pro/Resources/Fonts &amp; Materials/LiberationSans SDF.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/TextMesh Pro/Resources/Fonts &amp; Materials/LiberationSans SDF.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectSettings/ProjectSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/ProjectSettings.asset" afterDir="false" />
-    </list>
+    <list default="true" id="3a8cb324-3b5e-4397-913c-2471c26700b2" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -134,7 +129,7 @@
       <workItem from="1716200389754" duration="1455000" />
       <workItem from="1716202364430" duration="1550000" />
       <workItem from="1716456890332" duration="1799000" />
-      <workItem from="1716468892540" duration="3253000" />
+      <workItem from="1716468892540" duration="3861000" />
     </task>
     <servers />
   </component>

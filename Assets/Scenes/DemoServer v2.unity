@@ -38944,7 +38944,7 @@ Transform:
   m_GameObject: {fileID: 1808862355}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.65, z: -1.804}
+  m_LocalPosition: {x: 0, y: 1.65, z: -1.804}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -43814,7 +43814,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: MeshTest
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 6583113165843873684, guid: 87be93624a7e09d40842ca0850512895, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:

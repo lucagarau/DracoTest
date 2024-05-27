@@ -1,36 +1,35 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Data;
 using System.IO;
+using System.Threading.Tasks;
 using UnityEngine;
 using Draco;
 using MixedReality.Toolkit.SpatialManipulation;
 
-
 public class DracoMeshManager : MonoBehaviour
 {
     static private List<DracoMeshManager> Instances;
-    
-    [SerializeField] Camera mainCamera = null;
-    [SerializeField] private Boolean isStatic = false;
+
+    [SerializeField] private Camera mainCamera = null;
+    [SerializeField] private bool isStatic = false;
     [SerializeField] private Mesh placeholderMesh = null;
     [SerializeField] private string meshPath = null;
-    
-    //metadati della mesh
+
+    // Metadati della mesh
     private string Name { set; get; }
     private uint Size { set; get; }
     private float DecompressionTime { set; get; }
     private float DownloadTime { set; get; }
     private int VtxCount { set; get; }
     private int FacesCount { set; get; }
-    
-    //variabili per la gestione della mesh
+
+    // Variabili per la gestione della mesh
     private MeshFilter meshFilter;
     private Renderer renderer;
     private bool isVisible = false;
-    
-    //variabili per il ridimensionamento dell'oggetto
+
+    // Variabili per il ridimensionamento dell'oggetto
     private Bounds normalizedBounds;
     private Bounds bounds;
     private Vector3 startPosition;
@@ -40,34 +39,34 @@ public class DracoMeshManager : MonoBehaviour
     {
         DecompressionTime = 0;
         DownloadTime = 0;
-        
+
         startPosition = transform.position;
         meshFilter = GetComponent<MeshFilter>();
         renderer = GetComponent<Renderer>();
-        
+
         VtxCount = meshFilter.mesh.vertexCount;
         FacesCount = meshFilter.mesh.triangles.Length;
-        
+
         normalizedBounds = renderer.bounds;
         if (isStatic && placeholderMesh != null)
         {
-            GetComponent<MeshFilter>().mesh = placeholderMesh;
+            meshFilter.mesh = placeholderMesh;
         }
-        
-        if(Instances == null)
+
+        if (Instances == null)
         {
             Instances = new List<DracoMeshManager>();
         }
-        
+
         GetComponent<ObjectManipulator>().selectEntered.AddListener((t0) =>
         {
-           SetInstance(this);
+            SetInstance(this);
         });
         SetInstance(this);
-        //resizeObject();
+        // resizeObject();
     }
 
-    public void FixedUpdate()
+    private void FixedUpdate()
     {
         if (isStatic)
         {
@@ -76,7 +75,7 @@ public class DracoMeshManager : MonoBehaviour
                 if (IsVisibleFromCamera(mainCamera, renderer))
                 {
                     Debug.Log($"Cambio la mesh con {meshPath}");
-                    ChangeMesh(meshPath);
+                    StartCoroutine(ChangeMeshCoroutine(meshPath));
                     isVisible = true;
                 }
             }
@@ -88,62 +87,79 @@ public class DracoMeshManager : MonoBehaviour
         }
     }
 
-    public async void ChangeMesh(String path)
+    private IEnumerator ChangeMeshCoroutine(string path)
     {
         var stopwatch = new System.Diagnostics.Stopwatch();
         stopwatch.Start();
-        //var fullPath = Path.Combine(Application.streamingAssetsPath, path);
         var fullPath = Path.Combine(Application.temporaryCachePath, path);
 
-        var data = await File.ReadAllBytesAsync(fullPath);
-        if (data == null) return;
+        Task<byte[]> dataTask = ReadFileAsync(fullPath);
+        yield return new WaitUntil(() => dataTask.IsCompleted);
+
+        var data = dataTask.Result;
+        if (data == null) yield break;
 
         var draco = new DracoMeshLoader();
-        var meshDataArray = Mesh.AllocateWritableMeshData(1); //allocazione della memoria per una sola mesh
-        
-        //decode
-        var result = await draco.ConvertDracoMeshToUnity(
+        var meshDataArray = Mesh.AllocateWritableMeshData(1); // Allocazione della memoria per una sola mesh
+
+        // Decode
+        Task<DracoMeshLoader.DecodeResult> resultTask = draco.ConvertDracoMeshToUnity(
             meshDataArray[0],
             data,
-            requireNormals:true);
+            requireNormals: true);
+        yield return new WaitUntil(() => resultTask.IsCompleted);
         
-        //decode avvenuto con successo
+
+        var result = resultTask.Result;
+
+        // Decode avvenuto con successo
         if (result.success)
         {
             var mesh = new Mesh();
-            Mesh.ApplyAndDisposeWritableMeshData(meshDataArray,mesh);
+            Mesh.ApplyAndDisposeWritableMeshData(meshDataArray, mesh);
             mesh.RecalculateNormals();
             mesh.RecalculateBounds();
             bounds = mesh.bounds;
             mesh.RecalculateTangents();
-            
+
             meshFilter.mesh = mesh;
+
+            /*
+            var meshCollider = GetComponent<MeshCollider>();
+            meshCollider.sharedMesh = mesh;
+            meshCollider.convex = true;*/
             
-            GetComponent<MeshCollider>().sharedMesh = mesh;
-            GetComponent<MeshCollider>().convex = true;
-            
+            var boxCollider = GetComponent<BoxCollider>();
+            if (boxCollider == null)
+                this.gameObject.AddComponent<BoxCollider>();
+            boxCollider.size = bounds.size;
+
             if (!isStatic)
             {
-                //ridimensionamento dell'oggetto
+                // Ridimensionamento dell'oggetto
                 resizeObject();
-                //rotazione dell'oggetto
+                // Rotazione dell'oggetto
                 rotateObject();
             }
             stopwatch.Stop();
             DecompressionTime = stopwatch.ElapsedMilliseconds;
             VtxCount = mesh.vertexCount;
             FacesCount = mesh.triangles.Length;
-            
-            
+
             PrintManager.UpdateMeshInfo(this);
         }
         else
         {
             Debug.LogError("Errore nella decompressione della mesh");
         }
-    }   
+    }
+
+    private async Task<byte[]> ReadFileAsync(string path)
+    {
+        return await Task.Run(() => File.ReadAllBytes(path));
+    }
     
-    
+
     private void rotateObject()
     {
         var camera = Camera.main;
@@ -151,29 +167,27 @@ public class DracoMeshManager : MonoBehaviour
         var rotation = Quaternion.LookRotation(direction);
         transform.rotation = rotation;
     }
-    
+
     private void resizeObject()
     {
-        
         // Ottieni il bounding box della mesh
-        
         var scaleFactor = normalizedBounds.size.magnitude / (bounds.size.magnitude);
         transform.localScale = Vector3.one * scaleFactor;
         normalizedScale = transform.localScale;
-        
     }
-    
+
     public void ResetObject()
     {
         rotateObject();
         transform.position = startPosition;
         transform.localScale = normalizedScale;
     }
-    
-    bool IsVisibleFromCamera(Camera camera, Renderer renderer)
+
+    private bool IsVisibleFromCamera(Camera camera, Renderer renderer)
     {
         if (camera == null)
             return false;
+
         // Verifica se il renderer è valido e attivo
         if (renderer != null && renderer.isVisible)
         {
@@ -186,16 +200,16 @@ public class DracoMeshManager : MonoBehaviour
             // Verifica se il bounding box interseca i piani di frustum della telecamera
             if (GeometryUtility.TestPlanesAABB(planes, bounds))
             {
-                return true; // L'oggetto è visibile nella 
+                return true; // L'oggetto è visibile nella telecamera
             }
         }
         return false; // L'oggetto non è visibile nella telecamera o non è valido
     }
-    
+
     public static void SetInstance(DracoMeshManager instance)
     {
-        Debug.Log("Setto l'istanza a " + instance.gameObject.name );
-        
+        Debug.Log("Setto l'istanza a " + instance.gameObject.name);
+
         if (Instances == null)
         {
             Instances = new List<DracoMeshManager>();
@@ -206,8 +220,7 @@ public class DracoMeshManager : MonoBehaviour
         Instances.Add(instance);
         PrintManager.UpdateMeshInfo(instance);
     }
-    
-    
+
     public static List<DracoMeshManager> GetInstances()
     {
         return Instances;
@@ -217,31 +230,34 @@ public class DracoMeshManager : MonoBehaviour
     {
         DownloadTime = time;
     }
-    
+
     public float GetDownloadTime()
     {
         return DownloadTime;
     }
-    
+
     public float GetDecompressionTime()
     {
         return DecompressionTime;
     }
-    
+
     public int GetVtxCount()
     {
         return VtxCount;
     }
-    
+
     public int GetFacesCount()
     {
         return FacesCount;
     }
-    
+
     public uint GetSize()
     {
         return Size;
     }
+    
+    public void ChangeMesh(string path)
+    {
+        StartCoroutine(ChangeMeshCoroutine(path));
+    }
 }
-
-

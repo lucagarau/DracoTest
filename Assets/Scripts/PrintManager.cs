@@ -29,12 +29,12 @@ public class PrintManager : MonoBehaviour
         DebugText.text = msg;
     }
 
-    private void OnGUI()
+    /*private void OnGUI()
     {
         //place text
         Rect textArea = new Rect(10, 10, 200, 50);
         GUI.Label(textArea, DisplayText);
-    }
+    }*/
 
     public static void UpdateMeshInfo(DracoMeshManager draco)
     {

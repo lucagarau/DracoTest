@@ -258,7 +258,7 @@ public class updatemeshlistserver : MonoBehaviour
         Start();
     }
 
-    private void OnGUI()
+    /*private void OnGUI()
     {
         if (GUI.Button(new Rect(10, 100, 50, 50), "Reset Mesh"))
         {
@@ -273,7 +273,7 @@ public class updatemeshlistserver : MonoBehaviour
             newMeshButton();
         }
         
-    }
+    }*/
     
     public void SetIp()
     {

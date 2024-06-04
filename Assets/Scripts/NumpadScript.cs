@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class NumpadScript : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI _ipText = null;
-    [SerializeField] private updatemeshlistserver _updatemeshlistserver = null;
+    [SerializeField] private UpdateMeshListServer _updatemeshlistserver = null;
     // Start is called before the first frame update
     void Start()
     {
@@ -17,7 +17,7 @@ public class NumpadScript : MonoBehaviour
         
         if(_updatemeshlistserver == null)
         {
-            _updatemeshlistserver = GameObject.Find("updatemeshlistserver").GetComponent<updatemeshlistserver>();
+            _updatemeshlistserver = GameObject.Find("updatemeshlistserver").GetComponent<UpdateMeshListServer>();
         }
     }
 

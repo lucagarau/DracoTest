@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -7,7 +6,6 @@ using MixedReality.Toolkit.UX;
 using MixedReality.Toolkit.UX.Experimental;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Networking;
 using Newtonsoft.Json;
 
 public class UpdateMeshListServer : MonoBehaviour
@@ -21,16 +19,18 @@ public class UpdateMeshListServer : MonoBehaviour
     [SerializeField] private VirtualizedScrollRectList listView;
     [SerializeField] private GameObject placeholder;
     [SerializeField] private bool localhost = false;
-    private bool _onlineMode = true;
+    //private bool _onlineMode = true;
     private long _lastDownloadTime;
+    private List<FileData> fileDataArray;
+    
 
     [Serializable]
     public class FileData
     {
-        public string name;
-        public int size;
-        public int LOD;
-        public bool has_texture;
+        public string drc;
+        public string mtl;
+        public string texture;
+        public string path;
     }
 
     // Metodo di inizializzazione
@@ -48,16 +48,10 @@ public class UpdateMeshListServer : MonoBehaviour
 
         // Inizializza la lista delle mesh
         var meshListFile = "mesh_list.json";
-        if (_onlineMode)
-        {
-            PrintManager.ShowMessage("Inizializzo la lista delle mesh dal server");
-            StartCoroutine(DownloadFile(meshListFile, UpdateList));
-        }
-        else
-        {
-            UpdateList(meshListFile);
-            PrintManager.ShowMessage("Inizializzo la lista delle mesh in locale");
-        }
+       
+        PrintManager.ShowMessage("Inizializzo la lista delle mesh dal server");
+        StartCoroutine(Utilities.DownloadFile(meshListFile,meshURL, _meshPath, UpdateList));
+        
     }
 
     // Metodo per pulire la cache locale
@@ -68,116 +62,68 @@ public class UpdateMeshListServer : MonoBehaviour
         {
             file.Delete();
         }
+
+        foreach (var subfolder in di.GetDirectories())
+        {
+            subfolder.Delete(true);
+        }
+        
     }
 
     // Metodo per aggiornare la lista delle mesh
-    void UpdateList(string meshList)
+    void UpdateList(string fileServerList)
     {
         if (listView == null)
         {
             Debug.LogError("VirtualizedScrollRectList non trovato");
-            return;
         }
-
-        string[] meshFiles;
-        if (_onlineMode)
+        
+        ReadMeshList();
+        fileDataArray = Utilities.getFileDataArray();
+        
+        listView.SetItemCount(fileDataArray.Count);
+        
+        listView.OnVisible = (buttons, i) =>
         {
-            List<string> tmp = ReadMeshList();
-            meshFiles = tmp.ToArray();
-        }
-        else
-        {
-            meshFiles = Directory.GetFiles(_offlineMeshPath, "*.drc");
-        }
-
-        listView.SetItemCount(meshFiles.Length);
-
-        listView.OnVisible = (go, i) =>
-        {
-            foreach (var button in go.GetComponentsInChildren<PressableButton>())
+            foreach (var text in buttons.GetComponentsInChildren<TextMeshProUGUI>())
             {
-                button.gameObject.name = "mesh " + i;
-                var meshfile = meshFiles[i];
-                if (_onlineMode)
-                    button.OnClicked.AddListener(() => StartCoroutine(DownloadFile(meshfile,ChangeMeshButton)));
-                else
-                {
-                    button.OnClicked.AddListener(() =>
-                    {
-                        if (DracoMeshManager.GetInstances().Count == 0) NewMeshButton();
-                        DracoMeshManager.GetInstances().Last().ChangeMesh(meshFiles[i]);
-                    });
-                }
-            }
-
-            foreach (var text in go.GetComponentsInChildren<TextMeshProUGUI>())
-            {
-                var meshName = _onlineMode ? meshFiles[i] : Path.GetFileName(meshFiles[i]);
+                var meshName = fileDataArray[i].drc;
                 if (text.gameObject.name == "Text")
                     text.text = $"{meshName}";
             }
-        };
+            
+            foreach (var button in buttons.GetComponentsInChildren<PressableButton>())
+            {
+                button.gameObject.name = "mesh " + i;
 
-        listView.OnInvisible = (go, i) =>
+                var mesh = fileDataArray[i];
+                button.OnClicked.AddListener(()=>{
+                    StartCoroutine(Utilities.DownloadFile(mesh.path + "/"+mesh.drc, meshURL , _meshPath, ChangeMeshButton));
+                   // StartCoroutine(Utilities.DownloadFile(mesh.mtl, meshURL + mesh.path + "/", _meshPath, ChangeMaterialButton, mesh.texture));
+                    StartCoroutine(Utilities.DownloadFile(mesh.path + "/"+mesh.texture, meshURL, _meshPath, ChangeTextureButton));
+                });
+
+            }
+
+            
+        };
+        
+        listView.OnInvisible = (buttons, i) =>
         {
-            foreach (var button in go.GetComponentsInChildren<PressableButton>())
+            foreach (var button in buttons.GetComponentsInChildren<PressableButton>())
             {
                 button.gameObject.name = "button";
                 button.OnClicked.RemoveAllListeners();
             }
         };
-    }
+        
+        
 
-    // Metodo per scaricare un file dal server
-    private IEnumerator DownloadFile(string file, Action<string> callback)
-    {
-        PrintManager.ShowMessage($"Download in corso di {file} da {meshURL + file}");
-        var stopwatch = System.Diagnostics.Stopwatch.StartNew();
-        stopwatch.Start();
-
-        if (!File.Exists(_meshPath + file))
-        {
-            PrintManager.ShowMessage("File non trovato in locale, scarico il file dal server");
-            var url = meshURL + file;
-
-            using (UnityWebRequest request = UnityWebRequest.Get(url))
-            {
-                yield return request.SendWebRequest();
-
-                if (request.result != UnityWebRequest.Result.Success)
-                {
-                    HandleDownloadError(request);
-                    yield break;
-                }
-
-                SaveDownloadedFile(file, request.downloadHandler.data);
-            }
-        }
-        stopwatch.Stop();
-        _lastDownloadTime = stopwatch.ElapsedMilliseconds;
-
-        // Esegui il callback per ulteriori azioni
-        callback?.Invoke(file);
-    }
-
-    // Metodo per gestire errori di download
-    private void HandleDownloadError(UnityWebRequest request)
-    {
-        Debug.LogError("Errore durante il download del file: " + request.error);
-        PrintManager.ShowMessage("Errore durante il download del file: " + request.error);
-    }
-
-    // Metodo per salvare il file scaricato
-    private void SaveDownloadedFile(string file, byte[] data)
-    {
-        string filePath = _meshPath + file;
-        File.WriteAllBytes(filePath, data);
-        Debug.Log(filePath);
-        PrintManager.ShowMessage("Mesh scaricata correttamente: " + filePath);
+       
     }
 
     // Metodo per leggere la lista delle mesh
-    List<string> ReadMeshList(string meshListFile = "mesh_list.json")
+    void ReadMeshList(string meshListFile = "mesh_list.json")
     {
         string filePath = _meshPath + meshListFile;
         if (File.Exists(filePath))
@@ -186,15 +132,13 @@ public class UpdateMeshListServer : MonoBehaviour
             {
                 var json = reader.ReadToEnd();
                 reader.Close();
-                var fileDataArray = JsonConvert.DeserializeObject<List<FileData>>(json);
-                var meshList = fileDataArray.Select(data => data.name).ToList();
-                return new List<string>(meshList);
+                fileDataArray = JsonConvert.DeserializeObject<List<FileData>>(json);
+                Utilities.setFileDataArray(fileDataArray);
             }
         }
         else
         {
             Debug.LogError("Errore durante la lettura del file mesh_list.json");
-            return null;
         }
     }
 
@@ -233,7 +177,7 @@ public class UpdateMeshListServer : MonoBehaviour
     // Metodo per impostare la modalità online
     public void SetOnlineMode(bool mode)
     {
-        _onlineMode = mode;
+        //_onlineMode = mode;
         Start();
     }
 
@@ -249,6 +193,21 @@ public class UpdateMeshListServer : MonoBehaviour
     {
         if (DracoMeshManager.GetInstances().Count == 0) NewMeshButton();
         DracoMeshManager.GetInstances().Last().ChangeMesh(_meshPath + mesh);
-        DracoMeshManager.GetInstances().Last().SetDownloadTime(_lastDownloadTime);
+        DracoMeshManager.GetInstances().Last().SetDownloadTime(_lastDownloadTime, mesh);
+    }
+    
+    //metodo per il bottone che cambia il materiale
+    public void ChangeMaterialButton(string material)
+    {
+        if (DracoMeshManager.GetInstances().Count == 0) NewMeshButton();
+        DracoMeshManager.GetInstances().Last().ChangeMaterial(_meshPath + material);
+    }
+    
+    //metodo per il bottone che cambia la texture
+    public void ChangeTextureButton(string texture)
+    {
+        if (DracoMeshManager.GetInstances().Count == 0) NewMeshButton();
+        DracoMeshManager.GetInstances().Last().ChangeTexture(_meshPath + texture);
+        DracoMeshManager.GetInstances().Last().SetDownloadTime(_lastDownloadTime, texture);
     }
 }

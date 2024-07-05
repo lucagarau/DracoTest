@@ -26590,11 +26590,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8376646494505211226, guid: c6b351a67ceb69140b199996bbbea156, type: 3}
       propertyPath: <OnClicked>k__BackingField.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: newMeshButton
+      value: NewMeshButton
       objectReference: {fileID: 0}
     - target: {fileID: 8376646494505211226, guid: c6b351a67ceb69140b199996bbbea156, type: 3}
       propertyPath: <OnClicked>k__BackingField.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: updatemeshlistserver, Assembly-CSharp
+      value: UpdateMeshListServer, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 8376646494505211226, guid: c6b351a67ceb69140b199996bbbea156, type: 3}
       propertyPath: <OnClicked>k__BackingField.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
@@ -36141,7 +36141,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 079668fcd1f6aa944b45a688b70acf4a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ip: 192.168.229.42
+  ip: 10.51.21.198
   meshURL: http://192.168.248.42:8080/
   ipInputField: {fileID: 576201461}
   listView: {fileID: 1572805543}

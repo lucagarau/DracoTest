@@ -1,3 +1,4 @@
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -9,7 +10,7 @@ using MixedReality.Toolkit.SpatialManipulation;
 
 public class DracoMeshManager : MonoBehaviour
 {
-    static private List<DracoMeshManager> Instances;
+    private static List<DracoMeshManager> Instances;
 
     [SerializeField] private Camera mainCamera = null;
     [SerializeField] private bool isStatic = false;
@@ -20,7 +21,8 @@ public class DracoMeshManager : MonoBehaviour
     private string Name { set; get; }
     private uint Size { set; get; }
     private float DecompressionTime { set; get; }
-    private float DownloadTime { set; get; }
+    private float DownloadTimeMesh;
+    private float DownloadTimeTexture;
     private int VtxCount { set; get; }
     private int FacesCount { set; get; }
 
@@ -38,7 +40,8 @@ public class DracoMeshManager : MonoBehaviour
     private void Start()
     {
         DecompressionTime = 0;
-        DownloadTime = 0;
+        DownloadTimeMesh = 0;
+        DownloadTimeTexture = 0;
 
         startPosition = transform.position;
         meshFilter = GetComponent<MeshFilter>();
@@ -89,6 +92,7 @@ public class DracoMeshManager : MonoBehaviour
 
     private IEnumerator ChangeMeshCoroutine(string path)
     {
+        Debug.Log("inzio decompressione di " + path);
         var stopwatch = new System.Diagnostics.Stopwatch();
         stopwatch.Start();
         var fullPath = Path.Combine(Application.temporaryCachePath, path);
@@ -145,8 +149,12 @@ public class DracoMeshManager : MonoBehaviour
             DecompressionTime = stopwatch.ElapsedMilliseconds;
             VtxCount = mesh.vertexCount;
             FacesCount = mesh.triangles.Length;
+            
+            //todo prova per uv
+            RotateUV();
 
             PrintManager.UpdateMeshInfo(this);
+            Debug.Log("Decompressione completata con successo");
         }
         else
         {
@@ -226,14 +234,22 @@ public class DracoMeshManager : MonoBehaviour
         return Instances;
     }
 
-    public void SetDownloadTime(float time)
+    public void SetDownloadTime(float time, string type)
     {
-        DownloadTime = time;
+        switch (type)
+        {
+            case "mesh":
+                DownloadTimeMesh = time;
+                break;
+            case "texture":
+                DownloadTimeTexture = time;
+                break;
+        }
     }
 
     public float GetDownloadTime()
     {
-        return DownloadTime;
+        return DownloadTimeMesh + DownloadTimeTexture;
     }
 
     public float GetDecompressionTime()
@@ -258,6 +274,105 @@ public class DracoMeshManager : MonoBehaviour
     
     public void ChangeMesh(string path)
     {
+        Debug.Log("Cambio la mesh con " + path);
         StartCoroutine(ChangeMeshCoroutine(path));
+    }
+    public void ChangeTexture(string path)
+    {
+        StartCoroutine(ChangeTextureCoroutine(path));
+    }
+    
+    private IEnumerator ChangeTextureCoroutine(string path)
+    {
+        //todo prova per heic
+        /*if (path.EndsWith(".heic"))
+        {
+            var newPath = path.Replace(".heic", ".png");
+            Utilities.ConvertHeicToPng(path, newPath);
+            path = newPath;
+        }*/
+        Debug.Log("Cambio la texture con " + path);
+        var fullPath = Path.Combine(Application.temporaryCachePath, path);
+
+        // Lettura asincrona del file per evitare blocchi nel thread principale
+        byte[] data = null;
+        yield return ReadFileAsync(fullPath, result => data = result);
+
+        if (data == null)
+        {
+            Debug.LogError("Errore nel caricamento della texture dal path: " + fullPath);
+            yield break;
+        }
+
+        // Caricamento della texture
+        var texture = new Texture2D(1, 1);
+        texture.LoadImage(data);
+        texture.Apply();
+        renderer.material.mainTexture = texture;
+
+        yield return null;
+    }
+
+    private IEnumerator ReadFileAsync(string path, Action<byte[]> callback)
+    {
+        byte[] data = null;
+        bool isDone = false;
+
+        // Legge il file in un task separato per evitare il blocco del thread principale
+        System.Threading.Tasks.Task.Run(() =>
+        {
+            try
+            {
+                data = File.ReadAllBytes(path);
+            }
+            catch (Exception e)
+            {
+                Debug.LogError("Errore durante la lettura del file: " + e.Message);
+            }
+            finally
+            {
+                isDone = true;
+            }
+        });
+
+        // Aspetta che il task termini
+        while (!isDone)
+        {
+            yield return null;
+        }
+
+        // Esegue il callback con i dati letti
+        callback(data);
+    }
+    
+    public void ChangeMaterial(string path)
+    {
+        Debug.Log("Cambio il materiale con " + path);
+        StartCoroutine(ChangeMaterialCoroutine(path));
+    }
+    
+    private IEnumerator ChangeMaterialCoroutine(string path)
+    {
+        Debug.Log("Cambio il materiale con " + path);
+        var fullPath = Path.Combine(Application.temporaryCachePath, path);
+        var material = Utilities.LoadMTL(fullPath);
+        renderer.material = material;
+        yield return null;
+    }
+
+    private void RotateUV()
+    {
+        var mesh = GetComponent<MeshFilter>().mesh;
+        Vector2[] uvs = mesh.uv;
+        
+        Debug.Log(uvs.Length);
+
+        for (int i = 0; i < uvs.Length; i++)
+        {
+            //uvs[i].x = 1.0f - uvs[i].x;
+            uvs[i].y = -1.0f * uvs[i].y;
+        }
+
+        mesh.uv = uvs;
     }
 }

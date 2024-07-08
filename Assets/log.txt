@@ -2143,3 +2143,13 @@
 	Decompressione Time:2167
 	Vertices:2349608
 	Faces:5077437
+[2024-07-08 16:23:48] Mesh:MeshTest
+	Download Time:0
+	Decompressione Time:0
+	Vertices:24
+	Faces:36
+[2024-07-08 16:25:40] Mesh:MeshTest
+	Download Time:0
+	Decompressione Time:0
+	Vertices:24
+	Faces:36

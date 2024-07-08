@@ -4,14 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3a8cb324-3b5e-4397-913c-2471c26700b2" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.DracoTest/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.DracoTest/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DracoMeshManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/DracoMeshManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/PrintManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/PrintManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Utilities.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Utilities.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/log.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/log.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Packages/MixedReality/com.microsoft.mixedreality.movingplatform-0.0.3.tgz" beforeDir="false" />
-    </list>
+    <list default="true" id="3a8cb324-3b5e-4397-913c-2471c26700b2" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -149,7 +142,7 @@
       <workItem from="1717075477187" duration="250000" />
       <workItem from="1717081183293" duration="1456000" />
       <workItem from="1717504889110" duration="4329000" />
-      <workItem from="1720428370969" duration="5944000" />
+      <workItem from="1720428370969" duration="6914000" />
     </task>
     <servers />
   </component>

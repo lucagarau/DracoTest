@@ -35,6 +35,18 @@ public class Utilities : MonoBehaviour
                 }
 
                 SaveDownloadedFile(file, request.downloadHandler.data, internalPath);
+                stopwatch.Stop();
+                _lastDownloadTime = stopwatch.ElapsedMilliseconds;
+
+                //update download time
+                if (file.Contains(".drc"))
+                {
+                    PrintManager.setDownloadTime(_lastDownloadTime, "mesh");
+                }
+                else if (file.Contains(".png"))
+                {
+                    PrintManager.setDownloadTime(_lastDownloadTime, "texture");
+                }
             }
         }
         

@@ -9,19 +9,19 @@ public class PrintManager : MonoBehaviour
     private static string logFile ;
     private static string DisplayText;
     private static TextMeshProUGUI DebugText;
-    private static TextMeshProUGUI DownloadText;
-    private static TextMeshProUGUI DecompressionText;
-    private static TextMeshProUGUI VtxText;
-    private static TextMeshProUGUI FacesText;
-    private static TextMeshProUGUI SizeText;
-
+    private static TextMeshProUGUI _meshDownloadTime, _textureDownloadTime;
+    private static TextMeshProUGUI _decompressionMeshTime, _decompressionTextureTime;
+    private static TextMeshProUGUI _vtxCount, _facesCount;
     private void Start()
     {
         DebugText = GameObject.Find("DebugText").GetComponent<TextMeshProUGUI>();
-        DownloadText = GameObject.Find("DownloadTimeText").GetComponent<TextMeshProUGUI>();
-        DecompressionText = GameObject.Find("DecoTimeText").GetComponent<TextMeshProUGUI>();
-        VtxText = GameObject.Find("VtxText").GetComponent<TextMeshProUGUI>();
-        FacesText = GameObject.Find("FacesText").GetComponent<TextMeshProUGUI>();
+        _meshDownloadTime = GameObject.Find("MeshDownloadTime").GetComponent<TextMeshProUGUI>();
+        _textureDownloadTime = GameObject.Find("TextureDownloadTime").GetComponent<TextMeshProUGUI>();
+        _decompressionMeshTime = GameObject.Find("MeshDecompressionTime").GetComponent<TextMeshProUGUI>();
+        _decompressionTextureTime = GameObject.Find("TextureDecompressionTime").GetComponent<TextMeshProUGUI>();
+        _vtxCount = GameObject.Find("MeshVerticesNumber").GetComponent<TextMeshProUGUI>();
+        _facesCount = GameObject.Find("MeshPolyNumber").GetComponent<TextMeshProUGUI>();
+        
         
         logFile = Application.dataPath + "/log.txt";
         if (!System.IO.File.Exists(logFile))
@@ -48,11 +48,8 @@ public class PrintManager : MonoBehaviour
     public static void UpdateMeshInfo(DracoMeshManager draco)
     {
         if (draco == null) return;
-        DownloadText.text = draco.GetDownloadTime().ToString() + " ms";
-        DecompressionText.text =draco.GetDecompressionTime().ToString() + " ms";
-        VtxText.text = draco.GetVtxCount().ToString();
-        FacesText.text = draco.GetFacesCount().ToString();
-        //SizeText.text = draco.GetSize().ToString() + " Kb";
+        _vtxCount.text = draco.GetVtxCount().ToString();
+        _facesCount.text = draco.GetFacesCount().ToString();
         
         var now = DateTime.Now;
         System.IO.File.AppendAllText(logFile,
@@ -60,8 +57,7 @@ public class PrintManager : MonoBehaviour
             "Mesh:"+
             draco.gameObject.name +
             "\n\tDownload Time:" +
-            draco.GetDownloadTime()
-                .ToString() +
+            draco.GetDownloadTime().ToString() +
             "\n\tDecompressione Time:" +
             draco.GetDecompressionTime()
                 .ToString() +
@@ -72,7 +68,39 @@ public class PrintManager : MonoBehaviour
             draco.GetFacesCount()
                 .ToString() +
             "\n");
-        
-
     }
+
+    public static void setDownloadTime(float time, string type)
+    {
+        switch (type)
+        {   
+            case "mesh":
+                _meshDownloadTime.text = time + "ms";
+                break;
+            case "texture":
+                _textureDownloadTime.text = time + "ms";
+                break;
+            default:
+                Debug.LogError("Tipo non riconosciuto o non ancora implementato");
+                break;
+        }
+    }
+    
+    public static void setDecompressionTime(float time, string type)
+    {
+        switch (type)
+        {   
+            case "mesh":
+                _decompressionMeshTime.text = time + "ms";
+                break;
+            case "texture":
+                _decompressionTextureTime.text = time + "ms";
+                break;
+            default:
+                Debug.LogError("Tipo non riconosciuto o non ancora implementato");
+                break;
+        }
+    }
+    
+    
 }

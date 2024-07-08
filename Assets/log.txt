@@ -2068,3 +2068,78 @@
 	Decompressione Time:776
 	Vertices:199918
 	Faces:392928
+[2024-07-08 15:20:24] Mesh:MeshTest
+	Download Time:0
+	Decompressione Time:0
+	Vertices:24
+	Faces:36
+[2024-07-08 15:20:49] Mesh:MeshTest
+	Download Time:0
+	Decompressione Time:533
+	Vertices:341423
+	Faces:633747
+[2024-07-08 15:20:57] Mesh:MeshTest
+	Download Time:0
+	Decompressione Time:750
+	Vertices:692921
+	Faces:1253424
+[2024-07-08 15:21:01] Mesh:MeshTest
+	Download Time:0
+	Decompressione Time:391
+	Vertices:245149
+	Faces:491622
+[2024-07-08 15:21:05] Mesh:MeshTest
+	Download Time:0
+	Decompressione Time:376
+	Vertices:271274
+	Faces:516879
+[2024-07-08 15:21:08] Mesh:MeshTest
+	Download Time:0
+	Decompressione Time:385
+	Vertices:341423
+	Faces:633747
+[2024-07-08 15:21:13] Mesh:MeshTest
+	Download Time:0
+	Decompressione Time:316
+	Vertices:17442
+	Faces:35712
+[2024-07-08 15:21:17] Mesh:MeshTest
+	Download Time:0
+	Decompressione Time:593
+	Vertices:692921
+	Faces:1253424
+[2024-07-08 15:22:30] Mesh:MeshTest
+	Download Time:0
+	Decompressione Time:0
+	Vertices:24
+	Faces:36
+[2024-07-08 15:22:42] Mesh:MeshTest
+	Download Time:0
+	Decompressione Time:374
+	Vertices:341423
+	Faces:633747
+[2024-07-08 15:25:51] Mesh:MeshTest
+	Download Time:0
+	Decompressione Time:0
+	Vertices:24
+	Faces:36
+[2024-07-08 15:26:05] Mesh:MeshTest
+	Download Time:0
+	Decompressione Time:408
+	Vertices:341423
+	Faces:633747
+[2024-07-08 15:26:11] Mesh:MeshTest
+	Download Time:0
+	Decompressione Time:1066
+	Vertices:692921
+	Faces:1253424
+[2024-07-08 15:26:18] Mesh:MeshTest
+	Download Time:0
+	Decompressione Time:3052
+	Vertices:2349608
+	Faces:5077437
+[2024-07-08 15:31:20] Mesh:MeshTest
+	Download Time:0
+	Decompressione Time:2167
+	Vertices:2349608
+	Faces:5077437

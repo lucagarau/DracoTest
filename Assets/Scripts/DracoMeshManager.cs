@@ -147,6 +147,7 @@ public class DracoMeshManager : MonoBehaviour
             }
             stopwatch.Stop();
             DecompressionTime = stopwatch.ElapsedMilliseconds;
+            PrintManager.setDecompressionTime(DecompressionTime,"mesh");
             VtxCount = mesh.vertexCount;
             FacesCount = mesh.triangles.Length;
             
@@ -284,6 +285,8 @@ public class DracoMeshManager : MonoBehaviour
     
     private IEnumerator ChangeTextureCoroutine(string path)
     {
+        var stopWatch = new System.Diagnostics.Stopwatch();
+        stopWatch.Start();
         //todo prova per heic
         /*if (path.EndsWith(".heic"))
         {
@@ -309,6 +312,9 @@ public class DracoMeshManager : MonoBehaviour
         texture.LoadImage(data);
         texture.Apply();
         renderer.material.mainTexture = texture;
+        stopWatch.Stop();
+        Debug.Log("Decompressione completata con successo in " + stopWatch.ElapsedMilliseconds + "ms");
+        PrintManager.setDecompressionTime(stopWatch.ElapsedMilliseconds,"texture");
 
         yield return null;
     }

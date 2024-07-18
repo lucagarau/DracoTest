@@ -2,11 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.Networking;
-using LibHeifSharp;
-using LibHeifSharp.Interop;
 
 public class Utilities : MonoBehaviour
 {
@@ -154,46 +151,9 @@ public class Utilities : MonoBehaviour
                     texture.Apply();
                     material.mainTexture = texture;
                     break; 
-                    
-                //todo  Aggiungi altri parametri come Ks, Ka, d, ecc.
             }
         }
 
         return material;
-    }
-
-    
-    public static void ConvertHeicToPng(string inputPath, string outputPath)
-    {
-        try
-        {
-            if (!File.Exists(inputPath))
-            {
-                Debug.LogError("Input file not found: " + inputPath);
-                return;
-            }
-
-            using (var heifContext = new HeifContext(inputPath))
-            {
-                var handle = heifContext.GetPrimaryImageHandle();
-                var decodedImage = handle.Decode(HeifColorspace.Rgb, HeifChroma.InterleavedRgba32);
-
-                // Convert HeifImage to Texture2D
-                var texture = new Texture2D(decodedImage.Width, decodedImage.Height, TextureFormat.RGBA32, false);
-                var pixelData = decodedImage.GetPlane(HeifChannel.Interleaved);
-                //texture.LoadRawTextureData(pixelData);
-                texture.Apply();
-
-                // Encode Texture2D to PNG
-                byte[] pngData = texture.EncodeToPNG();
-                File.WriteAllBytes(outputPath, pngData);
-
-                Debug.Log("Conversion completed: " + outputPath);
-            }
-        }
-        catch (Exception ex)
-        {
-            Debug.LogError("Error during conversion: " + ex.Message);
-        }
     }
 }

@@ -61,10 +61,11 @@ public class DracoMeshManager : MonoBehaviour
             Instances = new List<DracoMeshManager>();
         }
 
-        GetComponent<ObjectManipulator>().selectEntered.AddListener((t0) =>
+        if (mainCamera != null)
         {
-            SetInstance(this);
-        });
+            GetComponent<ObjectManipulator>().selectEntered.AddListener((t0) => { SetInstance(this); });
+        }
+
         SetInstance(this);
         // resizeObject();
     }
@@ -143,7 +144,7 @@ public class DracoMeshManager : MonoBehaviour
                 // Ridimensionamento dell'oggetto
                 resizeObject();
                 // Rotazione dell'oggetto
-                rotateObject();
+                //rotateObject();
             }
             stopwatch.Stop();
             DecompressionTime = stopwatch.ElapsedMilliseconds;
@@ -171,6 +172,7 @@ public class DracoMeshManager : MonoBehaviour
 
     private void rotateObject()
     {
+        if(mainCamera == null) return; 
         var camera = Camera.main;
         var direction = camera.transform.position - transform.position;
         var rotation = Quaternion.LookRotation(direction);
@@ -180,9 +182,11 @@ public class DracoMeshManager : MonoBehaviour
     private void resizeObject()
     {
         // Ottieni il bounding box della mesh
+        Debug.Log("Resize object");
         var scaleFactor = normalizedBounds.size.magnitude / (bounds.size.magnitude);
         transform.localScale = Vector3.one * scaleFactor;
         normalizedScale = transform.localScale;
+        
     }
 
     public void ResetObject()
@@ -371,8 +375,6 @@ public class DracoMeshManager : MonoBehaviour
         var mesh = GetComponent<MeshFilter>().mesh;
         Vector2[] uvs = mesh.uv;
         
-        Debug.Log(uvs.Length);
-
         for (int i = 0; i < uvs.Length; i++)
         {
             //uvs[i].x = 1.0f - uvs[i].x;

@@ -18,6 +18,8 @@ public class UpdateMeshListServer : MonoBehaviour
     [SerializeField] private TextMeshProUGUI ipInputField;
     [SerializeField] private VirtualizedScrollRectList listView;
     [SerializeField] private GameObject placeholder;
+    [SerializeField] private DracoMeshManager dummy;
+
     [SerializeField] private bool localhost = false;
     //private bool _onlineMode = true;
     private long _lastDownloadTime;
@@ -37,6 +39,11 @@ public class UpdateMeshListServer : MonoBehaviour
     void Start()
     {
         ipInputField.text = ip;
+        
+        if (dummy == null)
+        {
+            dummy = GameObject.Find("Dummy").GetComponent<DracoMeshManager>();
+        }
         
         // Imposta l'URL del server
         meshURL = localhost ? "http://localhost:8080/" : "http://" + ip + ":8080/";
@@ -194,6 +201,7 @@ public class UpdateMeshListServer : MonoBehaviour
         if (DracoMeshManager.GetInstances().Count == 0) NewMeshButton();
         DracoMeshManager.GetInstances().Last().ChangeMesh(_meshPath + mesh);
         DracoMeshManager.GetInstances().Last().SetDownloadTime(_lastDownloadTime, mesh);
+        dummy.ChangeMesh(_meshPath + mesh);
     }
     
     //metodo per il bottone che cambia il materiale
@@ -201,6 +209,7 @@ public class UpdateMeshListServer : MonoBehaviour
     {
         if (DracoMeshManager.GetInstances().Count == 0) NewMeshButton();
         DracoMeshManager.GetInstances().Last().ChangeMaterial(_meshPath + material);
+        dummy.ChangeMaterial(_meshPath + material);
     }
     
     //metodo per il bottone che cambia la texture
@@ -209,5 +218,6 @@ public class UpdateMeshListServer : MonoBehaviour
         if (DracoMeshManager.GetInstances().Count == 0) NewMeshButton();
         DracoMeshManager.GetInstances().Last().ChangeTexture(_meshPath + texture);
         DracoMeshManager.GetInstances().Last().SetDownloadTime(_lastDownloadTime, texture);
+        dummy.ChangeTexture(_meshPath + texture);
     }
 }

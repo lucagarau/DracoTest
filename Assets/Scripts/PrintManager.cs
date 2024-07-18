@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 
@@ -23,17 +24,18 @@ public class PrintManager : MonoBehaviour
         _facesCount = GameObject.Find("MeshPolyNumber").GetComponent<TextMeshProUGUI>();
         
         
-        logFile = Application.dataPath + "/log.txt";
+       /* logFile = Application.dataPath + "/log.txt";
         if (!System.IO.File.Exists(logFile))
         {
             System.IO.File.Create(logFile);
         }
         
-        Debug.Log("Log file created at: " + logFile);
+        Debug.Log("Log file created at: " + logFile);*/
     }
 
     public static void ShowMessage(string msg)
     {
+        if(DebugText == null) return;
         DisplayText = msg;
         DebugText.text = msg;
     }
@@ -48,10 +50,12 @@ public class PrintManager : MonoBehaviour
     public static void UpdateMeshInfo(DracoMeshManager draco)
     {
         if (draco == null) return;
+        if (_vtxCount == null || _facesCount == null) return;
+        if (!DracoMeshManager.GetInstances().Any()) return;
         _vtxCount.text = draco.GetVtxCount().ToString();
         _facesCount.text = draco.GetFacesCount().ToString();
         
-        var now = DateTime.Now;
+        /*var now = DateTime.Now;
         System.IO.File.AppendAllText(logFile,
             "[" + now.ToString("yyyy-MM-dd HH:mm:ss") + "] " +
             "Mesh:"+
@@ -67,11 +71,13 @@ public class PrintManager : MonoBehaviour
             "\n\tFaces:" +
             draco.GetFacesCount()
                 .ToString() +
-            "\n");
+            "\n");*/
     }
 
     public static void setDownloadTime(float time, string type)
     {
+        if (_meshDownloadTime == null || _textureDownloadTime == null) return;
+        
         switch (type)
         {   
             case "mesh":
@@ -88,6 +94,7 @@ public class PrintManager : MonoBehaviour
     
     public static void setDecompressionTime(float time, string type)
     {
+        if (_decompressionMeshTime == null || _decompressionTextureTime == null) return;
         switch (type)
         {   
             case "mesh":

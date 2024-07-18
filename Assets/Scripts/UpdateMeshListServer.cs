@@ -19,7 +19,8 @@ public class UpdateMeshListServer : MonoBehaviour
     [SerializeField] private VirtualizedScrollRectList listView;
     [SerializeField] private GameObject placeholder;
     [SerializeField] private DracoMeshManager dummy;
-
+    [SerializeField] private TextMeshProUGUI descriptionText;
+ 
     [SerializeField] private bool localhost = false;
     //private bool _onlineMode = true;
     private long _lastDownloadTime;
@@ -33,6 +34,7 @@ public class UpdateMeshListServer : MonoBehaviour
         public string mtl;
         public string texture;
         public string path;
+        public string description;
     }
 
     // Metodo di inizializzazione
@@ -108,6 +110,11 @@ public class UpdateMeshListServer : MonoBehaviour
                     StartCoroutine(Utilities.DownloadFile(mesh.path + "/"+mesh.drc, meshURL , _meshPath, ChangeMeshButton));
                    // StartCoroutine(Utilities.DownloadFile(mesh.mtl, meshURL + mesh.path + "/", _meshPath, ChangeMaterialButton, mesh.texture));
                     StartCoroutine(Utilities.DownloadFile(mesh.path + "/"+mesh.texture, meshURL, _meshPath, ChangeTextureButton));
+                    if (mesh.description != null && descriptionText != null)
+                        StartCoroutine(Utilities.DownloadFile(mesh.path + "/" + mesh.description, meshURL, _meshPath,
+                            ChangeDescription));
+                    else
+                        descriptionText.text = "";
                 });
 
             }
@@ -219,5 +226,23 @@ public class UpdateMeshListServer : MonoBehaviour
         DracoMeshManager.GetInstances().Last().ChangeTexture(_meshPath + texture);
         DracoMeshManager.GetInstances().Last().SetDownloadTime(_lastDownloadTime, texture);
         dummy.ChangeTexture(_meshPath + texture);
+    }
+
+    public void ChangeDescription(string file)
+    {
+        //read txt file
+        string filePath = _meshPath + file;
+        if (File.Exists(filePath))
+        {
+            using (StreamReader reader = new StreamReader(filePath))
+            {
+                descriptionText.text = reader.ReadToEnd();
+                reader.Close();
+            }
+        }
+        else
+        {
+            Debug.LogError("Errore durante la lettura del file " + file);
+        }
     }
 }

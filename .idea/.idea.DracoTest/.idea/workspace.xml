@@ -6,7 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="3a8cb324-3b5e-4397-913c-2471c26700b2" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.DracoTest/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.DracoTest/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/UpdateMeshListServer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/UpdateMeshListServer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DracoMeshManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/DracoMeshManager.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -169,7 +169,7 @@
       <workItem from="1720769719122" duration="4485000" />
       <workItem from="1720791578304" duration="433000" />
       <workItem from="1721223769599" duration="4927000" />
-      <workItem from="1721309099131" duration="798000" />
+      <workItem from="1721309099131" duration="8217000" />
     </task>
     <servers />
   </component>

@@ -64,9 +64,10 @@ public class DracoMeshManager : MonoBehaviour
         if (mainCamera != null)
         {
             GetComponent<ObjectManipulator>().selectEntered.AddListener((t0) => { SetInstance(this); });
+            SetInstance(this);
         }
 
-        SetInstance(this);
+        
         // resizeObject();
     }
 
@@ -143,8 +144,9 @@ public class DracoMeshManager : MonoBehaviour
             {
                 // Ridimensionamento dell'oggetto
                 resizeObject();
+                CenterMesh();
                 // Rotazione dell'oggetto
-                //rotateObject();
+                rotateObject();
             }
             stopwatch.Stop();
             DecompressionTime = stopwatch.ElapsedMilliseconds;
@@ -162,6 +164,32 @@ public class DracoMeshManager : MonoBehaviour
         {
             Debug.LogError("Errore nella decompressione della mesh");
         }
+    }
+    
+    private void CenterMesh()
+    {
+        MeshFilter meshFilter = GetComponent<MeshFilter>();
+        if (meshFilter == null || meshFilter.mesh == null)
+        {
+            Debug.LogWarning("No mesh found on the MeshFilter.");
+            return;
+        }
+
+        // Calcola il centro del bounding box della mesh
+        Bounds bounds = meshFilter.mesh.bounds;
+        Vector3 center = bounds.center;
+
+        // Sposta i vertici della mesh
+        Vector3[] vertices = meshFilter.mesh.vertices;
+        for (int i = 0; i < vertices.Length; i++)
+        {
+            vertices[i] -= center;
+        }
+        meshFilter.mesh.vertices = vertices;
+        meshFilter.mesh.RecalculateBounds();
+
+        // Sposta l'oggetto in modo che la mesh centrata si trovi nella posizione originale
+        //transform.position += center;
     }
 
     private async Task<byte[]> ReadFileAsync(string path)

@@ -25,7 +25,8 @@ public class UpdateMeshListServer : MonoBehaviour
     //private bool _onlineMode = true;
     private long _lastDownloadTime;
     private List<FileData> fileDataArray;
-    
+
+    public GameObject ENV, FIEnv;
 
     [Serializable]
     public class FileData
@@ -244,5 +245,12 @@ public class UpdateMeshListServer : MonoBehaviour
         {
             Debug.LogError("Errore durante la lettura del file " + file);
         }
+    }
+    
+    //metodo per la gestione della full immersion mode
+    public void FullImmersionMode(bool status)
+    {
+        ENV.SetActive(!status);
+        FIEnv.SetActive(status);
     }
 }

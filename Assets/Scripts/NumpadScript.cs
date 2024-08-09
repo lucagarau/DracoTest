@@ -1,6 +1,7 @@
 using System.Text.RegularExpressions;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class NumpadScript : MonoBehaviour
@@ -14,11 +15,6 @@ public class NumpadScript : MonoBehaviour
         {
             _ipText = GameObject.Find("IpText").GetComponent<TextMeshProUGUI>();
         }
-        
-        if(_updatemeshlistserver == null)
-        {
-            _updatemeshlistserver = GameObject.Find("updatemeshlistserver").GetComponent<UpdateMeshListServer>();
-        }
     }
 
     public void KeyPressed(string key)
@@ -31,8 +27,13 @@ public class NumpadScript : MonoBehaviour
         {
             string ipPattern = @"\b((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\b";
             Regex regex = new Regex(ipPattern);
-            if(regex.IsMatch(_ipText.text))
-                _updatemeshlistserver.SetIp();
+            if (regex.IsMatch(_ipText.text))
+            {
+                //_updatemeshlistserver.SetIp();
+                PlayerPrefs.SetString("ip", _ipText.text);
+                PlayerPrefs.Save();
+                SceneManager.LoadScene(1);
+            }
             else Debug.Log("Invalid IP");
         }
         else

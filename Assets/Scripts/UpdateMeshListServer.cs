@@ -41,6 +41,7 @@ public class UpdateMeshListServer : MonoBehaviour
     // Metodo di inizializzazione
     void Start()
     {
+        ip = PlayerPrefs.GetString("ip");
         ipInputField.text = ip;
         
         if (dummy == null)

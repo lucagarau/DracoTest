@@ -9,7 +9,6 @@ Library: C:\Users\luca-\OneDrive\Data\progetti\Borsa\DracoTest\Temp\BurstOutput\
 --target-framework=NetFramework
 --assembly-defines=Assembly-CSharp;
 --assembly-defines=Draco;
---assembly-defines=LibHeifSharp;
 --assembly-defines=Microsoft.MixedReality.GraphicsTools;
 --assembly-defines=Microsoft.MixedReality.OpenXR;
 --assembly-defines=MixedReality.Toolkit.Accessibility;
